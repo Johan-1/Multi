@@ -18,7 +18,7 @@ public class PlayerMovement : MonoBehaviour
     void Awake()
     {
         if (_numPlayers > 0)
-            Destroy(gameObject);
+            DestroyImmediate(gameObject);
 
         _numPlayers++;
     }
