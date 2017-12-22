@@ -12,20 +12,10 @@ public class PlayerMovement : MonoBehaviour
 
     bool _grounded;
     Rigidbody2D _rigidBody;
-
-    static int _numPlayers;
-
-    void Awake()
-    {
-        if (_numPlayers > 0)
-            DestroyImmediate(gameObject);
-
-        _numPlayers++;
-    }
-
+   
     void Start()
     {        
-        _rigidBody = GetComponent<Rigidbody2D>();
+        _rigidBody = GetComponent<Rigidbody2D>();      
         DontDestroyOnLoad(this);
     }
 

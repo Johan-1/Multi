@@ -7,9 +7,12 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour 
 {
 
+    [SerializeField] GameObject _player;
 
     public void NewGame()
     {
+        SaveLoadManager.GetInstance.DeleteGame("Game.data");
+        Instantiate(_player);
         SceneManager.LoadScene("Screen1");
 
     }
@@ -17,7 +20,8 @@ public class MainMenu : MonoBehaviour
     public void LoadGame()
     {
 
-        print("Add load function");
+        SaveLoadManager.GetInstance.LoadGame("Game.data");
+        
     }
 
 }
