@@ -70,6 +70,7 @@ public class SaveLoadManager : MonoBehaviour
 
             fs.Close();
 
+            // set witch file we loaded so we know where to save new progress
             _saveFile = file;
 
             // create player and load the scene where we last saved
