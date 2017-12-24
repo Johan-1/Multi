@@ -20,9 +20,14 @@ public class SaveLoadManager : MonoBehaviour
     SaveData _saveData = new SaveData();
     public SaveData saveData { get { return _saveData; } }
 
+    // savedata class that will hold info about a savefile(name, time played ,progress etc)
+    SavefileInfoData _savefileInfoData = new SavefileInfoData();
+    public SavefileInfoData savefileInfoData { get { return _savefileInfoData; } }
+
     //list of all objects that will save thier data on save
     List<ISaveable> _saveableObjects = new List<ISaveable>();
 
+    // witch file we are playing the game with
     string _saveFile; 
     public string saveFile { set { _saveFile = value; } }
 
@@ -50,16 +55,23 @@ public class SaveLoadManager : MonoBehaviour
         foreach (ISaveable obj in _saveableObjects)
             obj.SaveData();
             
+        //save data to game savefile
         BinaryFormatter bf = new BinaryFormatter();
-        FileStream fs = new FileStream(Application.persistentDataPath + "/" + _saveFile ,FileMode.Create);
-        
+        FileStream fs = new FileStream(Application.persistentDataPath + "/" + _saveFile ,FileMode.Create);        
         bf.Serialize(fs, _saveData);
         fs.Close();
+
+        //save data to info savefile      
+        fs = new FileStream(Application.persistentDataPath + "/Info" + _saveFile, FileMode.Create);
+        bf.Serialize(fs, _savefileInfoData);
+        fs.Close();
+
+        print("saved to file " + _saveFile);
 
 
     }   
 
-    public void LoadGame(string file)
+    public void LoadGame(string file, string name)
     {
         if (File.Exists(Application.persistentDataPath + "/" + file))
         {
@@ -76,6 +88,7 @@ public class SaveLoadManager : MonoBehaviour
             // create player and load the scene where we last saved
             GameObject player = Instantiate(_player);
             player.GetComponent<PlayerMovement>().transform.position = new Vector3( _saveData.sceneData.SavePointPosition[0], _saveData.sceneData.SavePointPosition[1],0);
+            player.GetComponent<PlayerAbilitys>().playerName = name;
             SceneManager.LoadScene(_saveData.sceneData.sceneID);
 
 
@@ -108,11 +121,19 @@ public class SaveLoadManager : MonoBehaviour
 
 //dataContainers 
 
+//main savedata class that will save the state of the game
 [Serializable]
 public class SaveData
 {
     public Scenedata sceneData;
     public PlayerAbilityData playerAbilityData;
+}
+
+// holds data that is neccesery to know about a savefile, will be used to see description of your savegame before you load it
+[Serializable]
+public class SavefileInfoData
+{
+    public string playername;
 }
 
 [Serializable]

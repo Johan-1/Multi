@@ -10,6 +10,9 @@ public class PlayerAbilitys : MonoBehaviour, ISaveable
     bool _wallJumpUnlocked = false; public bool wallJumpUnlocked { get { return _wallJumpUnlocked; } set { _wallJumpUnlocked = value; } }
     bool _dashUnlocked = false; public bool dashUnlocked { get { return _dashUnlocked; } set { _dashUnlocked = value; } }
 
+    //temp storage in this class for now
+    string _playerName;
+    public string playerName { set { _playerName = value; } }
 
     void Start()
     {
@@ -44,6 +47,8 @@ public class PlayerAbilitys : MonoBehaviour, ISaveable
     {
         print("saving abilitys");
         SaveLoadManager.GetInstance.saveData.playerAbilityData = new PlayerAbilityData(_dubbleJumpUnlocked, _wallJumpUnlocked, _dashUnlocked);
+
+        SaveLoadManager.GetInstance.savefileInfoData.playername = _playerName;
     }
 
     void Update()
