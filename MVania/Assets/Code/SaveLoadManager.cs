@@ -43,7 +43,6 @@ public class SaveLoadManager : MonoBehaviour
         }
         else if (_instance != this)
         {
-
             DestroyImmediate(this);
         }
     }
@@ -78,7 +77,13 @@ public class SaveLoadManager : MonoBehaviour
             BinaryFormatter bf = new BinaryFormatter();
             FileStream fs = new FileStream(Application.persistentDataPath + "/" + file, FileMode.Open);
 
+            // load data into savefile
             _saveData = (SaveData)bf.Deserialize(fs);
+            fs.Close();
+
+            // load data into savefileinfodata
+            fs = new FileStream(Application.persistentDataPath + "/Info" + file, FileMode.Open);
+            _savefileInfoData = (SavefileInfoData)bf.Deserialize(fs);
 
             fs.Close();
 
@@ -97,12 +102,7 @@ public class SaveLoadManager : MonoBehaviour
             print("could not find savefile");
     }
 
-    public void DeleteGame(string path)
-    {
-        // try to find a specific file and delete it
-        if(File.Exists(Application.persistentDataPath + "/" + path))
-            File.Delete(Application.persistentDataPath + "/" + path);
-    }
+    
 
     // adds an object to list of saveObjects
     public void AddSaveObject(ISaveable obj)
@@ -134,6 +134,8 @@ public class SaveData
 public class SavefileInfoData
 {
     public string playername;
+    public int hours;
+    public int minutes;
 }
 
 [Serializable]

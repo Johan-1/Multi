@@ -16,7 +16,15 @@ public class MainMenu : MonoBehaviour
     [SerializeField] GameObject _startScreen;
     [SerializeField] GameObject _LoadScreen;
 
-    [SerializeField] Button[] _savefileButtons;
+    [SerializeField] SaveFileButton[] _savefileButtons;
+    
+    [Serializable]
+    struct SaveFileButton
+    {
+        public Button button;
+        public Text name;
+        public Text time;
+    }
 
     GameObject _previousSelectedButton;
 
@@ -48,6 +56,11 @@ public class MainMenu : MonoBehaviour
     {        
         StartGameWithFile("Game" + buttonId + ".data", buttonId);        
     }
+
+    public void DeleteFileSelected(int buttonId)
+    {
+        DeleteGame("Game" + buttonId + ".data", buttonId);
+    }
     
     void StartGameWithFile(string file, int fileID)
     {
@@ -70,6 +83,21 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene("Screen1");
     }
 
+    public void DeleteGame(string file, int fileId)
+    {
+        // try to find a specific file and delete it
+        if (File.Exists(Application.persistentDataPath + "/" + file))
+        {
+            File.Delete(Application.persistentDataPath + "/" + file);
+            File.Delete(Application.persistentDataPath + "/" + "Info" + file);
+
+            _savefileButtons[fileId].name.text = "Empty";
+            _savefileButtons[fileId].time.gameObject.SetActive(false);
+
+        }
+           
+    }
+
 
     void LoadSaveFileInfoData()
     {        
@@ -84,13 +112,17 @@ public class MainMenu : MonoBehaviour
 
                  _savefileInfoData[i] = (SavefileInfoData)bf.Deserialize(fs);
 
-                 _savefileButtons[i].GetComponentInChildren<Text>().text = _savefileInfoData[i].playername;
+                // set texts on savefile to saved data 
+                 _savefileButtons[i].name.text = _savefileInfoData[i].playername;
+                _savefileButtons[i].time.text = "Time : " + _savefileInfoData[i].hours.ToString("00") + "." + _savefileInfoData[i].minutes.ToString("00");
 
                  fs.Close();
              }
              else
              {
-                 _savefileButtons[i].GetComponentInChildren<Text>().text = "Empty";
+                // if file is not found we display it as an empty game
+                 _savefileButtons[i].name.text = "Empty";
+                _savefileButtons[i].time.gameObject.SetActive(false);
              }
 
          }

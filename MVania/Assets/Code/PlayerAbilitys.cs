@@ -10,6 +10,8 @@ public class PlayerAbilitys : MonoBehaviour, ISaveable
     bool _wallJumpUnlocked = false; public bool wallJumpUnlocked { get { return _wallJumpUnlocked; } set { _wallJumpUnlocked = value; } }
     bool _dashUnlocked = false; public bool dashUnlocked { get { return _dashUnlocked; } set { _dashUnlocked = value; } }
 
+   
+
     //temp storage in this class for now
     string _playerName;
     public string playerName { set { _playerName = value; } }
@@ -22,7 +24,6 @@ public class PlayerAbilitys : MonoBehaviour, ISaveable
             LoadData();
     }
 
-
     void LoadData()
     {
        
@@ -30,7 +31,7 @@ public class PlayerAbilitys : MonoBehaviour, ISaveable
         _dubbleJumpUnlocked = data.dubbleJumpUnlocked;
         _wallJumpUnlocked = data.wallJumpUnlocked;
         _dashUnlocked = data.dashUnlocked;
-
+        
         print("loading abilitydata");
         print("dubblejump " + _dubbleJumpUnlocked);
         print("walljump " + _wallJumpUnlocked);
@@ -49,25 +50,10 @@ public class PlayerAbilitys : MonoBehaviour, ISaveable
         SaveLoadManager.GetInstance.saveData.playerAbilityData = new PlayerAbilityData(_dubbleJumpUnlocked, _wallJumpUnlocked, _dashUnlocked);
 
         SaveLoadManager.GetInstance.savefileInfoData.playername = _playerName;
+       
     }
 
-    void Update()
-    {
-
-        DebugAbilitys();
-    }
-
-    void DebugAbilitys()
-    {
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            _dubbleJumpUnlocked = true;
-            print("dubbleJumpUnlocked");
-            
-        }
-
-    }
-
-
+   
+    
 
 }
