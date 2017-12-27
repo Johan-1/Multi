@@ -154,13 +154,13 @@ public class Scenedata
 [Serializable]
 public class PlayerAbilityData
 {
-    public bool dubbleJumpUnlocked;
+    public bool airJumpsUnlocked;
     public bool wallJumpUnlocked;
     public bool dashUnlocked;
 
     public PlayerAbilityData(bool dubbleJump,bool wallJump, bool dash)
     {
-        dubbleJumpUnlocked = dubbleJump;
+        airJumpsUnlocked = dubbleJump;
         wallJumpUnlocked = wallJump;
         dashUnlocked = dash;
     }

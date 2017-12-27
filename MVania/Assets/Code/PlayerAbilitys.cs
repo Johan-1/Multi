@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerAbilitys : MonoBehaviour, ISaveable
 {
 
-    bool _dubbleJumpUnlocked = false; public bool dubbleJumpUnlocked { get { return _dubbleJumpUnlocked; } set { _dubbleJumpUnlocked = value; } }
+    bool _airJumpsUnlocked = false; public bool airJumpsUnlocked { get { return _airJumpsUnlocked; } set { _airJumpsUnlocked = value; } }
     bool _wallJumpUnlocked = false; public bool wallJumpUnlocked { get { return _wallJumpUnlocked; } set { _wallJumpUnlocked = value; } }
     bool _dashUnlocked = false; public bool dashUnlocked { get { return _dashUnlocked; } set { _dashUnlocked = value; } }
 
@@ -28,12 +28,12 @@ public class PlayerAbilitys : MonoBehaviour, ISaveable
     {
        
         PlayerAbilityData data = SaveLoadManager.GetInstance.saveData.playerAbilityData;
-        _dubbleJumpUnlocked = data.dubbleJumpUnlocked;
+        _airJumpsUnlocked = data.airJumpsUnlocked;
         _wallJumpUnlocked = data.wallJumpUnlocked;
         _dashUnlocked = data.dashUnlocked;
         
         print("loading abilitydata");
-        print("dubblejump " + _dubbleJumpUnlocked);
+        print("dubblejump " + _airJumpsUnlocked);
         print("walljump " + _wallJumpUnlocked);
         print("dash " + _dashUnlocked);
 
@@ -47,13 +47,18 @@ public class PlayerAbilitys : MonoBehaviour, ISaveable
     public void SaveData()
     {
         print("saving abilitys");
-        SaveLoadManager.GetInstance.saveData.playerAbilityData = new PlayerAbilityData(_dubbleJumpUnlocked, _wallJumpUnlocked, _dashUnlocked);
+        SaveLoadManager.GetInstance.saveData.playerAbilityData = new PlayerAbilityData(_airJumpsUnlocked, _wallJumpUnlocked, _dashUnlocked);
 
         SaveLoadManager.GetInstance.savefileInfoData.playername = _playerName;
        
     }
 
-   
-    
+
+    void Update()
+    {
+        // debug unlock abilitys
+        if (Input.GetKeyDown(KeyCode.M))
+            _airJumpsUnlocked = true;
+    }
 
 }

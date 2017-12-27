@@ -9,15 +9,20 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float _moveSpeed = 1.0f;
     [SerializeField] float _jumpForce = 1.0f;
     [SerializeField] float _jumpInputTime = 0.25f;
+    [SerializeField] int _numberOfAirJumps = 1;
 
+    int _airJumpCount = 0;
     bool _grounded;
+    bool _movingRight;
     Rigidbody2D _rigidBody;
+    PlayerAbilitys _playerAbilitys;
 
     
    
     void Start()
     {        
-        _rigidBody = GetComponent<Rigidbody2D>();      
+        _rigidBody = GetComponent<Rigidbody2D>();
+        _playerAbilitys = GetComponent<PlayerAbilitys>();
         DontDestroyOnLoad(this);
     }
 
@@ -37,22 +42,40 @@ public class PlayerMovement : MonoBehaviour
 
         // change forward facing of player depending on moving left/right
         if (XInput != 0 && XInput < 0)
+        {
             transform.right = -Vector2.right;
+            _movingRight = false;
+        }
         else if (XInput != 0 && XInput > 0)
+        {
             transform.right = Vector2.right;
+            _movingRight = true;
+        }
+            
     }
 
     void HandleJumping()
-    {       
-        // check if grounded and if jump just was pressed 
-        if (CheckGrounded() && Input.GetButtonDown("Jump"))
-            StartCoroutine(AnalogJump());            
-
+    {
+        // check if grounded 
+        if (CheckGrounded())
+        {
+            if (Input.GetButtonDown("Jump"))
+                StartCoroutine(AnalogJump());
+        }
+        else if (_playerAbilitys.airJumpsUnlocked) // if not grounded check if airjump ability is unlocked
+        {
+            if (Input.GetButtonDown("Jump") && _airJumpCount < _numberOfAirJumps) // do jump in air if we not alredy have done max airjumps
+            {
+                StartCoroutine(AnalogJump());
+                _airJumpCount++;
+            }
+        }
     }
 
     IEnumerator AnalogJump()
     {
         float time = 0;
+        _airJumpCount++;
 
         // check for jump input during the input window time
         // add y velocity ass long as jumpbutton is held down
@@ -73,29 +96,42 @@ public class PlayerMovement : MonoBehaviour
 
     bool CheckGrounded()
     {
-        // cast rays from 3 positions starting from the bottom left corner
-        Vector3 startOrigin = transform.position + new Vector3(-.5f, -.5f, .0f);
+
+        // always want back raycast to be a bit behind player when jumping of edges
+        float[] xOffset;
+        if (_movingRight)
+            xOffset = new float[3] { -1.0f, 0.0f, 0.35f };
+        else
+            xOffset = new float[3] { -0.35f, 0.0f, 1.0f };
+
+        float yOffset = -0.3f;
+        float lenght = 0.2f;
         int hitCount = 0;
 
         for (int i = 0; i < 3; i++)
         {
-            Debug.DrawLine(startOrigin, startOrigin + new Vector3(0, -.25f, 0), Color.red); // debug lines
-
+            // set start pos of rays
+            Vector3 origin = transform.position + new Vector3(xOffset[i], yOffset, 0);
+                       
             // if hit add to hitcounter
-            if (Physics2D.Raycast(startOrigin, Vector3.down, 0.25f, LayerMask.GetMask("Ground")))            
+            if (Physics2D.Raycast(origin, Vector3.down, lenght, LayerMask.GetMask("Ground")))            
                  hitCount++;
-            
-            startOrigin.x += .5f; // move origin so we cast from middle and right aswell
+
+            Debug.DrawLine(origin, origin + new Vector3(0, -lenght, 0), Color.red); // debug lines  
 
         }
 
         // if atleast one hit we are standing on ground
         if (hitCount > 0)
+        {
             _grounded = true;
-        else
+            _airJumpCount = 0; // reset jump count when on ground
+        }
+        else       
             _grounded = false;
-
+                                  
         return _grounded;
+            
     }
 
 }
