@@ -25,7 +25,7 @@ public class CameraMovement : MonoBehaviour
     {
 
         Vector3 desiredPosition = GetDesiredPosition();
-        transform.position = Vector3.SmoothDamp(transform.position, new Vector3(desiredPosition.x,desiredPosition.y,transform.position.z), ref _vel, 0.25f);
+        transform.position = Vector3.SmoothDamp(transform.position, new Vector3(desiredPosition.x,desiredPosition.y,transform.position.z), ref _vel, 0.4f);
     }
 
 
