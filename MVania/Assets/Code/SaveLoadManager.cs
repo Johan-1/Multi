@@ -90,10 +90,13 @@ public class SaveLoadManager : MonoBehaviour
             // set witch file we loaded so we know where to save new progress
             _saveFile = file;
 
+            // tell the gameProgressManager to set its data that we just loaded
+            // this have info of example defeated bosses, picked up items, locked doors etc 
+            GameProgressManager.GetInstance.SetupSaveData();
+
             // create player and load the scene where we last saved
             GameObject player = Instantiate(_player);
-            player.GetComponent<PlayerMovement>().transform.position = new Vector3( _saveData.sceneData.SavePointPosition[0], _saveData.sceneData.SavePointPosition[1],0);
-            player.GetComponent<PlayerAbilitys>().playerName = name;
+            player.GetComponent<PlayerMovement>().transform.position = new Vector3( _saveData.sceneData.SavePointPosition[0], _saveData.sceneData.SavePointPosition[1],0);            
             SceneManager.LoadScene(_saveData.sceneData.sceneID);
 
 
@@ -127,6 +130,7 @@ public class SaveData
 {
     public Scenedata sceneData;
     public PlayerAbilityData playerAbilityData;
+    public GameProgressData gameProgressData;
 }
 
 // holds data that is neccesery to know about a savefile, will be used to see description of your savegame before you load it
@@ -163,6 +167,18 @@ public class PlayerAbilityData
         airJumpsUnlocked = dubbleJump;
         wallJumpUnlocked = wallJump;
         dashUnlocked = dash;
+    }
+
+}
+
+[Serializable]
+public class GameProgressData
+{
+    public bool[] _powerUpPickedUp;
+
+    public GameProgressData(bool[] powerUpPickedUp)
+    {
+        _powerUpPickedUp = new bool[(int)PowerUp.POWERUPTYPE.SIZE] { powerUpPickedUp[0], powerUpPickedUp[1], powerUpPickedUp[2] };
     }
 
 }

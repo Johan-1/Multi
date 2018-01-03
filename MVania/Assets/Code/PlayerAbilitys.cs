@@ -31,6 +31,8 @@ public class PlayerAbilitys : MonoBehaviour, ISaveable
         _airJumpsUnlocked = data.airJumpsUnlocked;
         _wallJumpUnlocked = data.wallJumpUnlocked;
         _dashUnlocked = data.dashUnlocked;
+
+        _playerName = SaveLoadManager.GetInstance.savefileInfoData.playername;
         
         print("loading abilitydata");
         print("dubblejump " + _airJumpsUnlocked);

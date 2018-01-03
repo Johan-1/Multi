@@ -1554,6 +1554,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _powerUp: 0
+  _pickupTextImage: {fileID: 1280167760099388, guid: 41abd6ab06068a348a6258966ec5e160,
+    type: 2}
 --- !u!1001 &1922936173
 Prefab:
   m_ObjectHideFlags: 0
