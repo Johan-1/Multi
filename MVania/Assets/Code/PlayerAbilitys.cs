@@ -59,8 +59,13 @@ public class PlayerAbilitys : MonoBehaviour, ISaveable
     void Update()
     {
         // debug unlock abilitys
-        if (Input.GetKeyDown(KeyCode.M))
+        if (Input.GetKeyDown(KeyCode.Alpha1))
             _airJumpsUnlocked = true;
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+            _wallJumpUnlocked = true;
+
+
     }
 
 }
