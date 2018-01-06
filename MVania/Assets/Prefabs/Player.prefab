@@ -152,6 +152,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+  _timeDashing: 0.14
+  _dashSpeed: 60
+  _dashCooldown: 0.5
 --- !u!114 &114779675416028554
 MonoBehaviour:
   m_ObjectHideFlags: 1

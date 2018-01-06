@@ -65,6 +65,9 @@ public class PlayerAbilitys : MonoBehaviour, ISaveable
         if (Input.GetKeyDown(KeyCode.Alpha2))
             _wallJumpUnlocked = true;
 
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+            _dashUnlocked = true;
+
 
     }
 
