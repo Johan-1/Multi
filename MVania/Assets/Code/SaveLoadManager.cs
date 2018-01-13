@@ -151,22 +151,19 @@ public class Scenedata
     public Scenedata(string id, float[] pos)
     {
         sceneID = id;
-        SavePointPosition = new float[3] { pos[0], pos[1], pos[2] };
+        SavePointPosition = pos;
     }
 }
 
 [Serializable]
 public class PlayerAbilityData
 {
-    public bool airJumpsUnlocked;
-    public bool wallJumpUnlocked;
-    public bool dashUnlocked;
+    
+    public bool[] abilitys;
 
-    public PlayerAbilityData(bool dubbleJump,bool wallJump, bool dash)
+    public PlayerAbilityData(bool[] abils)
     {
-        airJumpsUnlocked = dubbleJump;
-        wallJumpUnlocked = wallJump;
-        dashUnlocked = dash;
+        abilitys = abils;
     }
 
 }
@@ -178,7 +175,7 @@ public class GameProgressData
 
     public GameProgressData(bool[] powerUpPickedUp)
     {
-        _powerUpPickedUp = new bool[(int)PowerUp.POWERUPTYPE.SIZE] { powerUpPickedUp[0], powerUpPickedUp[1], powerUpPickedUp[2] };
+        _powerUpPickedUp = powerUpPickedUp;
     }
 
 }

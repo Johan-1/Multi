@@ -5,17 +5,13 @@ using UnityEngine;
 
 public class PlayerAbilitys : MonoBehaviour, ISaveable
 {
-
-    bool _airJumpsUnlocked = false; public bool airJumpsUnlocked { get { return _airJumpsUnlocked; } set { _airJumpsUnlocked = value; } }
-    bool _wallJumpUnlocked = false; public bool wallJumpUnlocked { get { return _wallJumpUnlocked; } set { _wallJumpUnlocked = value; } }
-    bool _dashUnlocked = false; public bool dashUnlocked { get { return _dashUnlocked; } set { _dashUnlocked = value; } }
-
+    
+    bool[] _abilitys = new bool[(int)PowerUp.POWERUPTYPE.SIZE];
    
-
     //temp storage in this class for now
     string _playerName;
     public string playerName { set { _playerName = value; } }
-
+  
     void Start()
     {
         AddToSaveableObjects();
@@ -28,16 +24,15 @@ public class PlayerAbilitys : MonoBehaviour, ISaveable
     {
        
         PlayerAbilityData data = SaveLoadManager.GetInstance.saveData.playerAbilityData;
-        _airJumpsUnlocked = data.airJumpsUnlocked;
-        _wallJumpUnlocked = data.wallJumpUnlocked;
-        _dashUnlocked = data.dashUnlocked;
+       
+        _abilitys = data.abilitys;
 
         _playerName = SaveLoadManager.GetInstance.savefileInfoData.playername;
         
         print("loading abilitydata");
-        print("dubblejump " + _airJumpsUnlocked);
-        print("walljump " + _wallJumpUnlocked);
-        print("dash " + _dashUnlocked);
+        print("dubblejump " + _abilitys[(int)PowerUp.POWERUPTYPE.AIRJUMP]);
+        print("walljump " + _abilitys[(int)PowerUp.POWERUPTYPE.WALLJUMP]);
+        print("dash " + _abilitys[(int)PowerUp.POWERUPTYPE.DASH]);
 
     }
 
@@ -49,7 +44,7 @@ public class PlayerAbilitys : MonoBehaviour, ISaveable
     public void SaveData()
     {
         print("saving abilitys");
-        SaveLoadManager.GetInstance.saveData.playerAbilityData = new PlayerAbilityData(_airJumpsUnlocked, _wallJumpUnlocked, _dashUnlocked);
+        SaveLoadManager.GetInstance.saveData.playerAbilityData = new PlayerAbilityData(_abilitys);
 
         SaveLoadManager.GetInstance.savefileInfoData.playername = _playerName;
        
@@ -60,15 +55,25 @@ public class PlayerAbilitys : MonoBehaviour, ISaveable
     {
         // debug unlock abilitys
         if (Input.GetKeyDown(KeyCode.Alpha1))
-            _airJumpsUnlocked = true;
+            _abilitys[0] = true;
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
-            _wallJumpUnlocked = true;
+            _abilitys[1] = true;
 
         if (Input.GetKeyDown(KeyCode.Alpha3))
-            _dashUnlocked = true;
+            _abilitys[2] = true;
 
 
+    }
+
+    public void UnlockAbility(bool status, PowerUp.POWERUPTYPE power)
+    {
+        _abilitys[(int)power] = status;
+    }
+
+    public bool AbilityUnlocked(PowerUp.POWERUPTYPE power)
+    {
+        return _abilitys[(int)power];
     }
 
 }

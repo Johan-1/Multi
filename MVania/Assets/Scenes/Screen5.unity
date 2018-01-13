@@ -1343,7 +1343,8 @@ Prefab:
       propertyPath: orthographic size
       value: 10
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114889552391210548, guid: 70f51bc8797197240985861584e89e0f, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 70f51bc8797197240985861584e89e0f, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &1544716679 stripped

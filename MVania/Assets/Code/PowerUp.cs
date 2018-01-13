@@ -35,7 +35,7 @@ public class PowerUp : MonoBehaviour
         if (other.tag == "Player")
         {
             // unlock ability so we can use it
-            other.GetComponent<PlayerAbilitys>().airJumpsUnlocked = true; 
+            other.GetComponent<PlayerAbilitys>().UnlockAbility(true, _powerUp); 
 
             // set that the pickup have been picked up otherwise it will be back when we reenter the room
             GameProgressManager.GetInstance.SetPowerUpPickupStatus((int)_powerUp, true);

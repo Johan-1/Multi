@@ -39,7 +39,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1677387481980934}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalPosition: {x: 0, y: 4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -57,11 +57,11 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 2
-  m_AngularDrag: 0.5
-  m_GravityScale: 15
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 10
   m_Material: {fileID: 0}
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
@@ -102,28 +102,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moveSpeed: 10
-  _moveSpeedAir: 200
-  _jumpForce: 300
+  _jumpForce: 18
   _jumpInputTime: 0.2
-  _maxXVelocity: 10
   _numberOfAirJumps: 1
-  _gravityOnWall: 5
+  _wallSlideSpeed: -3
+  _dropFromWallDelay: 0.2
   _timeAddingWallPushOutForce: 0.2
-  _wallPushOutForce: {x: 130, y: 400}
+  _wallPushOutForce: {x: 10, y: 20}
   _wallPushOutCurveX:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 2
       time: 0
-      value: 1
+      value: 0.025001526
       inSlope: 0
       outSlope: 0
       tangentMode: 0
     - serializedVersion: 2
-      time: 0.9958191
-      value: -0.09375
-      inSlope: 0
-      outSlope: 0
+      time: 0.19757918
+      value: 0.706087
+      inSlope: 0.6117299
+      outSlope: 0.6117299
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 0.7515649
+      value: 0.78935003
+      inSlope: 0.3299117
+      outSlope: 0.3299117
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 1.0250015
+      inSlope: 2
+      outSlope: 2
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -132,20 +143,20 @@ MonoBehaviour:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 2
-      time: 0.008346558
-      value: 0.63610077
+      time: 0
+      value: 1.0012512
       inSlope: 0
       outSlope: 0
       tangentMode: 0
     - serializedVersion: 2
-      time: 0.61758745
-      value: 0.76657516
-      inSlope: 0.55879354
-      outSlope: 0.55879354
+      time: 0.8212852
+      value: 0.97307694
+      inSlope: -0.10788441
+      outSlope: -0.10788441
       tangentMode: 0
     - serializedVersion: 2
-      time: 1
-      value: 1.0061798
+      time: 1.0247498
+      value: 0.91365814
       inSlope: 0
       outSlope: 0
       tangentMode: 0
