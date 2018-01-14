@@ -23,3 +23,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Screen6.unity
     guid: 8b31e7999106eb745bb4c2600c597400
+  - enabled: 1
+    path: Assets/Scenes/Save1.unity
+    guid: ad32f02f774b28b4bb779681241d1eb8
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 5c6c0b1d24bdae1478acd1b30491dbd7

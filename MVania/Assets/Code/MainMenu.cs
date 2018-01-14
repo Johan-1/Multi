@@ -67,7 +67,7 @@ public class MainMenu : MonoBehaviour
 
         if (File.Exists(Application.persistentDataPath + "/" + file))
         {            
-            SaveLoadManager.GetInstance.LoadGame(file, _savefileInfoData[fileID].playername);
+            SaveLoadManager.GetInstance.LoadGame(file);
         }
         else
             StartNewGame(file,fileID);

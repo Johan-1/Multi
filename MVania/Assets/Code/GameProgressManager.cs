@@ -57,6 +57,7 @@ public class GameProgressManager : MonoBehaviour, ISaveable
     {
         GameProgressData data = SaveLoadManager.GetInstance.saveData.gameProgressData;
         _powerUpPickedUp = data._powerUpPickedUp;
+        
     }
 
 }

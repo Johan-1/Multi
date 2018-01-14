@@ -70,8 +70,12 @@ public class SaveLoadManager : MonoBehaviour
 
     }   
 
-    public void LoadGame(string file, string name)
+    public void LoadGame(string file)
     {
+        // if gameover reload game from last save
+        if (file == "Respawn")
+            file = _saveFile;
+
         if (File.Exists(Application.persistentDataPath + "/" + file))
         {
             BinaryFormatter bf = new BinaryFormatter();
