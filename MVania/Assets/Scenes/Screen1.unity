@@ -2120,6 +2120,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114137528761441772, guid: d0339fb043461d1489626e9d02a3da9e,
+        type: 2}
+      propertyPath: _roomToLoad
+      value: Screen2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d0339fb043461d1489626e9d02a3da9e, type: 2}
   m_IsPrefabParent: 0

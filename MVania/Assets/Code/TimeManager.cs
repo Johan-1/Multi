@@ -10,6 +10,14 @@ public class TimeManager : MonoBehaviour , ISaveable
     int _minutes;
     int _hours;
 
+    [SerializeField] UIManager _uiManager; // temp instantation from this class
+
+    void Awake()
+    {
+        if(UIManager.GetInstance == null)
+           Instantiate(_uiManager);
+    }
+
     void Start () 			
 	{
         AddToSaveableObjects();

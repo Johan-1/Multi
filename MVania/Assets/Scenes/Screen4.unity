@@ -2656,7 +2656,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4375155671257700, guid: d0339fb043461d1489626e9d02a3da9e, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 18.87
+      value: 19.51
       objectReference: {fileID: 0}
     - target: {fileID: 4375155671257700, guid: d0339fb043461d1489626e9d02a3da9e, type: 2}
       propertyPath: m_LocalPosition.z
@@ -2672,11 +2672,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4375155671257700, guid: d0339fb043461d1489626e9d02a3da9e, type: 2}
       propertyPath: m_LocalRotation.z
-      value: 0.7071068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4375155671257700, guid: d0339fb043461d1489626e9d02a3da9e, type: 2}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4375155671257700, guid: d0339fb043461d1489626e9d02a3da9e, type: 2}
       propertyPath: m_RootOrder
@@ -2686,13 +2686,15 @@ Prefab:
       propertyPath: m_Name
       value: RoomLoaderBottom
       objectReference: {fileID: 0}
-    - target: {fileID: 4375155671257700, guid: d0339fb043461d1489626e9d02a3da9e, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+    - target: {fileID: 61091500500274574, guid: d0339fb043461d1489626e9d02a3da9e,
+        type: 2}
+      propertyPath: m_Size.x
+      value: 5
       objectReference: {fileID: 0}
-    - target: {fileID: 4375155671257700, guid: d0339fb043461d1489626e9d02a3da9e, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 90
+    - target: {fileID: 61091500500274574, guid: d0339fb043461d1489626e9d02a3da9e,
+        type: 2}
+      propertyPath: m_Size.y
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114137528761441772, guid: d0339fb043461d1489626e9d02a3da9e,
         type: 2}
@@ -8737,11 +8739,6 @@ Prefab:
     - target: {fileID: 4375155671257700, guid: d0339fb043461d1489626e9d02a3da9e, type: 2}
       propertyPath: m_RootOrder
       value: 14
-      objectReference: {fileID: 0}
-    - target: {fileID: 114137528761441772, guid: d0339fb043461d1489626e9d02a3da9e,
-        type: 2}
-      propertyPath: _roomToLoad
-      value: Screen5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d0339fb043461d1489626e9d02a3da9e, type: 2}

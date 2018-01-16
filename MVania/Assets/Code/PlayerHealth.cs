@@ -8,80 +8,53 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 {
 
     [SerializeField] int _maxHealth = 5;
-
+  
     int _currentHealth;
-    bool _isRespawning;
+       
 
-    public event Action<int, int> OnHealthChange;
-
+    PlayerRespawn _playerRespawn;
 
     void Awake()
     {
-        _currentHealth = _maxHealth;    
+        _currentHealth = _maxHealth;
+        _playerRespawn = GetComponent<PlayerRespawn>();
     }
 
+    void Start()
+    {
+        UIManager.GetInstance.healthBar.ModifyHealthbar(_currentHealth, _maxHealth);
+    }
 
     public void ModifyHealth(int health)
     {
         _currentHealth += health;
 
-        // call subscribers
-        if (OnHealthChange != null)
-            OnHealthChange(_currentHealth,_maxHealth);
-
-        // kill if health is at 0 and we are not alredy in respan
-        if (_currentHealth <= 0 && !_isRespawning)
+        UIManager.GetInstance.healthBar.ModifyHealthbar(_currentHealth, _maxHealth);
+        
+        if (_currentHealth <= 0 )
             Die();
     }
 
-    public void Die()
-    {       
-        // start respawn
-        StartCoroutine(Respawn());
-    }
-
-
-    IEnumerator Respawn()
+    public void RespawnOnDamage(int health)
     {
-        //disable player
-        _isRespawning = true;
-        GetComponent<PlayerMovement>().enabled = false;
-        GetComponent<Rigidbody2D>().isKinematic = true;
-        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        GetComponent<SpriteRenderer>().enabled = false;
+        _currentHealth += health;
 
-        // wait before we reload the game
-        yield return new WaitForSeconds(2.0f);
+        UIManager.GetInstance.healthBar.ModifyHealthbar(_currentHealth, _maxHealth);
 
-        // check if we have any savedata
-        if (SaveLoadManager.GetInstance.saveData.sceneData != null)
-        {
-            // if we have saved data, reset the state of the game to when we last saved
-            SaveLoadManager.GetInstance.LoadGame("Respawn");
-            Destroy(gameObject);
-        }
+        if (_currentHealth > 0)
+            _playerRespawn.RespawnPlayer();
         else
-        {
-            // if not set position to first room and load it
-            // TODO : should have save data by just starting a new game with this info
-            transform.position = new Vector3(0, 4, 0);
-            SceneManager.LoadScene("Screen1");
-            _currentHealth = _maxHealth;
-
-            yield return new WaitForSeconds(1.0f);
-
-            GetComponent<PlayerMovement>().enabled = true;
-            GetComponent<Rigidbody2D>().isKinematic = false;
-            GetComponent<SpriteRenderer>().enabled = true;
-            _isRespawning = false;
-
-        }
-
-        
-
-        
-
+            _playerRespawn.ReloadLastSave();
+       
     }
+
+    public void Die()
+    {
+        // start respawn
+        _playerRespawn.ReloadLastSave();
+        
+    }      
+   
 
     void Update()
     {
@@ -90,6 +63,9 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
         if (Input.GetKeyDown(KeyCode.M))
             ModifyHealth(1);
+
+        if (Input.GetKeyDown(KeyCode.H))
+            UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
     }
 
 }

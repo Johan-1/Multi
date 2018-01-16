@@ -12,7 +12,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 public class MainMenu : MonoBehaviour 
 {
 
-    [SerializeField] GameObject _player;
+    [SerializeField] GameObject _player;    
     [SerializeField] GameObject _startScreen;
     [SerializeField] GameObject _LoadScreen;
 
@@ -77,7 +77,7 @@ public class MainMenu : MonoBehaviour
     {   
         //TODO: make players being able to type in a name
         
-        SaveLoadManager.GetInstance.saveFile = file;
+        SaveLoadManager.GetInstance.saveFile = file;       
         GameObject player = Instantiate(_player);
         player.GetComponent<PlayerAbilitys>().playerName = "Player" + (fileID + 1); // hardcode name to "Player 1-3" for now
         SceneManager.LoadScene("Screen1");
