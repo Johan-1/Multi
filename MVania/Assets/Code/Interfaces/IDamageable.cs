@@ -5,7 +5,7 @@ using UnityEngine;
 public interface IDamageable
 {
 
-    void ModifyHealth(int health);
+    void ModifyHealth(int health, bool instantRespawn = false);
     void Die();
 	
 }

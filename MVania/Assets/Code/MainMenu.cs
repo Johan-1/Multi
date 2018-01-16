@@ -78,8 +78,7 @@ public class MainMenu : MonoBehaviour
         //TODO: make players being able to type in a name
         
         SaveLoadManager.GetInstance.saveFile = file;       
-        GameObject player = Instantiate(_player);
-        player.GetComponent<PlayerAbilitys>().playerName = "Player" + (fileID + 1); // hardcode name to "Player 1-3" for now
+        GameObject player = Instantiate(_player);       
         SceneManager.LoadScene("Screen1");
     }
 
@@ -113,7 +112,7 @@ public class MainMenu : MonoBehaviour
                  _savefileInfoData[i] = (SavefileInfoData)bf.Deserialize(fs);
 
                 // set texts on savefile to saved data 
-                 _savefileButtons[i].name.text = _savefileInfoData[i].playername;
+                _savefileButtons[i].name.text = "Game " + (i + 1);
                 _savefileButtons[i].time.text = "Time : " + _savefileInfoData[i].hours.ToString("00") + "." + _savefileInfoData[i].minutes.ToString("00");
 
                  fs.Close();

@@ -6,13 +6,7 @@ using UnityEngine.UI;
 public class Healthbar : MonoBehaviour
 {
     
-    Image _barFill;
-
-
-    void Awake()
-    {              
-        _barFill = GetComponent<Image>();
-    }
+    [SerializeField] Image _barFill;
 
     public void ModifyHealthbar(int newHealth, int maxhealth)
     {
@@ -20,4 +14,14 @@ public class Healthbar : MonoBehaviour
         _barFill.fillAmount = (float)newHealth / maxhealth;
         
     }
+
+    public void SetupHealthBar(int maxHealth)
+    {
+        gameObject.SetActive(true);
+        _barFill.fillAmount = 1.0f;
+
+    }
+    
+
+    
 }

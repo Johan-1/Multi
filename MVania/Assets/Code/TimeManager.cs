@@ -9,15 +9,7 @@ public class TimeManager : MonoBehaviour , ISaveable
     float _seconds;
     int _minutes;
     int _hours;
-
-    [SerializeField] UIManager _uiManager; // temp instantation from this class
-
-    void Awake()
-    {
-        if(UIManager.GetInstance == null)
-           Instantiate(_uiManager);
-    }
-
+     
     void Start () 			
 	{
         AddToSaveableObjects();
@@ -26,7 +18,7 @@ public class TimeManager : MonoBehaviour , ISaveable
 	
 	void Update () 	
 	{
-        _seconds += Time.deltaTime;
+        _seconds += Time.deltaTime * 1000.0f;
         if (_seconds >= 60)
         {
             _minutes++;
@@ -42,9 +34,13 @@ public class TimeManager : MonoBehaviour , ISaveable
 
     void LoadData()
     {
-        SavefileInfoData fileData = SaveLoadManager.GetInstance.savefileInfoData;
-        _minutes = fileData.minutes;
-        _hours = fileData.hours;
+        TimeData fileData = SaveLoadManager.GetInstance.saveData.timeData;
+        if (fileData == null)
+            return;
+
+        _hours = fileData.time[0];
+        _minutes = fileData.time[1];
+             
     }
 
     public void AddToSaveableObjects()
@@ -56,6 +52,8 @@ public class TimeManager : MonoBehaviour , ISaveable
     {      
         SaveLoadManager.GetInstance.savefileInfoData.hours = _hours;
         SaveLoadManager.GetInstance.savefileInfoData.minutes = _minutes;
+
+        SaveLoadManager.GetInstance.saveData.timeData = new TimeData(new int[] { _hours, _minutes });
     }
 
 }

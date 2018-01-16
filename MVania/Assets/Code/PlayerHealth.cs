@@ -18,39 +18,31 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     {
         _currentHealth = _maxHealth;
         _playerRespawn = GetComponent<PlayerRespawn>();
+        UIManager.GetInstance.healthBar.SetupHealthBar(_maxHealth);
     }
 
-    void Start()
+    
+    // modify health
+    public void ModifyHealth(int health, bool instantRespawn = false)
     {
-        UIManager.GetInstance.healthBar.ModifyHealthbar(_currentHealth, _maxHealth);
-    }
-
-    public void ModifyHealth(int health)
-    {
+        // change health
         _currentHealth += health;
 
-        UIManager.GetInstance.healthBar.ModifyHealthbar(_currentHealth, _maxHealth);
-        
-        if (_currentHealth <= 0 )
-            Die();
-    }
-
-    public void RespawnOnDamage(int health)
-    {
-        _currentHealth += health;
-
+        // uppdate healthbar
         UIManager.GetInstance.healthBar.ModifyHealthbar(_currentHealth, _maxHealth);
 
-        if (_currentHealth > 0)
+        // if health is 0 player is dead, else check if instantrespawn is true and respawn player to last respawn point (spikes etc can do 1 damage but will return player to begining of room)
+        if (_currentHealth <= 0)       
+            Die();                   
+        else if (instantRespawn)
             _playerRespawn.RespawnPlayer();
-        else
-            _playerRespawn.ReloadLastSave();
-       
+                   
     }
+   
 
     public void Die()
     {
-        // start respawn
+        // Reload last savefile
         _playerRespawn.ReloadLastSave();
         
     }      
@@ -64,8 +56,20 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         if (Input.GetKeyDown(KeyCode.M))
             ModifyHealth(1);
 
+        // debug stuff just here for the moment
+        // go back to main menu
         if (Input.GetKeyDown(KeyCode.H))
+        {
+            SaveLoadManager.GetInstance.ClearData();
+            GameProgressManager.GetInstance.ClearData();
+            UIManager.GetInstance.DisableUI();
+            FindObjectOfType<CameraMovement>().enabled = false;
+            Destroy(FindObjectOfType<PlayerAbilitys>().gameObject);
+
             UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+            
+        }
+           
     }
 
 }

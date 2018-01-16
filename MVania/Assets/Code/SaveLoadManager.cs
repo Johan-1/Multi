@@ -84,13 +84,7 @@ public class SaveLoadManager : MonoBehaviour
             // load data into savefile
             _saveData = (SaveData)bf.Deserialize(fs);
             fs.Close();
-
-            // load data into savefileinfodata
-            fs = new FileStream(Application.persistentDataPath + "/Info" + file, FileMode.Open);
-            _savefileInfoData = (SavefileInfoData)bf.Deserialize(fs);
-
-            fs.Close();
-
+            
             // set witch file we loaded so we know where to save new progress
             _saveFile = file;
 
@@ -123,6 +117,13 @@ public class SaveLoadManager : MonoBehaviour
         _saveableObjects.Remove(obj);
     }
 
+    public void ClearData()
+    {
+        // if we return to menu from an saved game we want to clear the data from previus game
+        // otherwise if starting brand new game the data from last game will be loaded
+        _saveData = new SaveData();
+    }
+
 }
 
 
@@ -135,13 +136,13 @@ public class SaveData
     public Scenedata sceneData;
     public PlayerAbilityData playerAbilityData;
     public GameProgressData gameProgressData;
+    public TimeData timeData;
 }
 
 // holds data that is neccesery to know about a savefile, will be used to see description of your savegame before you load it
 [Serializable]
 public class SavefileInfoData
-{
-    public string playername;
+{    
     public int hours;
     public int minutes;
 }
@@ -180,6 +181,18 @@ public class GameProgressData
     public GameProgressData(bool[] powerUpPickedUp)
     {
         _powerUpPickedUp = powerUpPickedUp;
+    }
+
+}
+
+[Serializable]
+public class TimeData
+{
+   public int[] time;
+
+    public TimeData(int[] times)
+    {
+        time = times;
     }
 
 }

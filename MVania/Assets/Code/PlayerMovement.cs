@@ -342,6 +342,10 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    
+    void OnDisable()
+    {
+        StopAllCoroutines();
+        _MOVEFLAGS = MOVEMENTFLAGS.DASHREADY;
+    }
 
 }

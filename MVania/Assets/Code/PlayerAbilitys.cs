@@ -8,9 +8,7 @@ public class PlayerAbilitys : MonoBehaviour, ISaveable
     
     bool[] _abilitys = new bool[(int)PowerUp.POWERUPTYPE.SIZE];
    
-    //temp storage in this class for now
-    string _playerName;
-    public string playerName { set { _playerName = value; } }
+    
   
     void Start()
     {
@@ -26,9 +24,7 @@ public class PlayerAbilitys : MonoBehaviour, ISaveable
         PlayerAbilityData data = SaveLoadManager.GetInstance.saveData.playerAbilityData;
        
         _abilitys = data.abilitys;
-
-        _playerName = SaveLoadManager.GetInstance.savefileInfoData.playername;
-        
+                
         print("loading abilitydata");
         print("dubblejump " + _abilitys[(int)PowerUp.POWERUPTYPE.AIRJUMP]);
         print("walljump " + _abilitys[(int)PowerUp.POWERUPTYPE.WALLJUMP]);
@@ -45,9 +41,7 @@ public class PlayerAbilitys : MonoBehaviour, ISaveable
     {
         print("saving abilitys");
         SaveLoadManager.GetInstance.saveData.playerAbilityData = new PlayerAbilityData(_abilitys);
-
-        SaveLoadManager.GetInstance.savefileInfoData.playername = _playerName;
-       
+               
     }
 
 

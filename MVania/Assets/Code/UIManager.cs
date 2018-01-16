@@ -25,4 +25,12 @@ public class UIManager : MonoBehaviour
             DestroyImmediate(this);
     }
 
+
+
+    public void DisableUI()
+    {
+
+        _healthBar.gameObject.SetActive(false);
+    }
+
 }

@@ -32,7 +32,7 @@ GameObject:
   m_IsActive: 1
 --- !u!1 &1292555933578196
 GameObject:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
@@ -40,7 +40,6 @@ GameObject:
   - component: {fileID: 224357028696132038}
   - component: {fileID: 222241879613136162}
   - component: {fileID: 114677487836791498}
-  - component: {fileID: 114558031368175050}
   m_Layer: 5
   m_Name: fill
   m_TagString: Untagged
@@ -76,13 +75,14 @@ GameObject:
   - component: {fileID: 224216277353810718}
   - component: {fileID: 222966386105517462}
   - component: {fileID: 114091319065709392}
+  - component: {fileID: 114372233191306856}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Healthbar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &114091319065709392
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -158,6 +158,18 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+--- !u!114 &114372233191306856
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1952326204510100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4aabbe95d462f4a449686d5f6f9d491b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _barFill: {fileID: 114677487836791498}
 --- !u!114 &114443757267127658
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -185,19 +197,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0cac3444ece03749877395ab498e884, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _healthBar: {fileID: 114558031368175050}
+  _healthBar: {fileID: 114372233191306856}
   _screenFade: {fileID: 114662642410120982}
---- !u!114 &114558031368175050
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1292555933578196}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4aabbe95d462f4a449686d5f6f9d491b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114662642410120982
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -286,7 +287,6 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 224216277353810718}
-  - {fileID: 224357028696132038}
   - {fileID: 224245080390202450}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -305,7 +305,8 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 224357028696132038}
   m_Father: {fileID: 224187008945386610}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -325,7 +326,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 224187008945386610}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -340,13 +341,13 @@ RectTransform:
   m_GameObject: {fileID: 1292555933578196}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.9999955, y: 0.9999955, z: 0.9999955}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 224187008945386610}
-  m_RootOrder: 1
+  m_Father: {fileID: 224216277353810718}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 151, y: -60}
+  m_AnchoredPosition: {x: 100, y: -10}
   m_SizeDelta: {x: 200, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}

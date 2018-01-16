@@ -22,6 +22,9 @@ public class ScreenFade : MonoBehaviour
     IEnumerator FadeOutCo(float time, float waitTostart)
     {
 
+        // set blackscreen to sctive before we start fadeout
+        _image.enabled = true;
+
         yield return new WaitForSeconds(waitTostart);
 
         float fraction = 0;
@@ -47,6 +50,8 @@ public class ScreenFade : MonoBehaviour
             yield return null;
         }
 
+        // disable fadeimage so we dont have to render a screensized alpha quad for no reason
+        _image.enabled = false;
     }
 
 }

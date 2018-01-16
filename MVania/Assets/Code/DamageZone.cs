@@ -10,18 +10,12 @@ public class DamageZone : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-
-        if (_instantRespawn)
-            if (other.tag == "Player")
-            {
-                other.GetComponent<PlayerHealth>().RespawnOnDamage(-_damage);
-                return;
-            }
-
         if (other.GetComponent<IDamageable>() != null)
-            other.GetComponent<IDamageable>().ModifyHealth(-_damage);
-
-
-        
+        {
+            // if player, respawn is set to _instantrespawn, else always false, enemys dont have respawn           
+            other.GetComponent<IDamageable>().ModifyHealth(-_damage, other.tag == "Player" ? _instantRespawn : false);
+            print("tookdamage");
+        }                   
     }
+
 }
