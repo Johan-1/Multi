@@ -137,6 +137,7 @@ public class SaveData
     public PlayerAbilityData playerAbilityData;
     public GameProgressData gameProgressData;
     public TimeData timeData;
+    public PlayerHealthData healthData;
 }
 
 // holds data that is neccesery to know about a savefile, will be used to see description of your savegame before you load it
@@ -145,6 +146,7 @@ public class SavefileInfoData
 {    
     public int hours;
     public int minutes;
+    public int numHealthUpgrades;
 }
 
 [Serializable]
@@ -170,6 +172,20 @@ public class PlayerAbilityData
     {
         abilitys = abils;
     }
+
+}
+
+[Serializable]
+public class PlayerHealthData
+{
+
+    public int numHealthUpgrades;
+
+    public PlayerHealthData(int numUpgrades)
+    {
+        numHealthUpgrades = numUpgrades;
+    }
+
 
 }
 

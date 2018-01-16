@@ -24,6 +24,7 @@ public class MainMenu : MonoBehaviour
         public Button button;
         public Text name;
         public Text time;
+        public Text healthPickup;
     }
 
     GameObject _previousSelectedButton;
@@ -92,6 +93,7 @@ public class MainMenu : MonoBehaviour
 
             _savefileButtons[fileId].name.text = "Empty";
             _savefileButtons[fileId].time.gameObject.SetActive(false);
+            _savefileButtons[fileId].healthPickup.gameObject.SetActive(false);
 
         }
            
@@ -114,6 +116,7 @@ public class MainMenu : MonoBehaviour
                 // set texts on savefile to saved data 
                 _savefileButtons[i].name.text = "Game " + (i + 1);
                 _savefileButtons[i].time.text = "Time : " + _savefileInfoData[i].hours.ToString("00") + "." + _savefileInfoData[i].minutes.ToString("00");
+                _savefileButtons[i].healthPickup.text = "HealthUpgrades : " + _savefileInfoData[i].numHealthUpgrades + "/10";
 
                  fs.Close();
              }
@@ -122,6 +125,7 @@ public class MainMenu : MonoBehaviour
                 // if file is not found we display it as an empty game
                  _savefileButtons[i].name.text = "Empty";
                 _savefileButtons[i].time.gameObject.SetActive(false);
+                _savefileButtons[i].healthPickup.gameObject.SetActive(false);
              }
 
          }

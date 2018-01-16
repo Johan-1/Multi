@@ -25,11 +25,9 @@ public class PlayerAbilitys : MonoBehaviour, ISaveable
        
         _abilitys = data.abilitys;
                 
-        print("loading abilitydata");
-        print("dubblejump " + _abilitys[(int)PowerUp.POWERUPTYPE.AIRJUMP]);
-        print("walljump " + _abilitys[(int)PowerUp.POWERUPTYPE.WALLJUMP]);
-        print("dash " + _abilitys[(int)PowerUp.POWERUPTYPE.DASH]);
-
+        //debug
+        print("UNLOCKED ABILITYS :" + "dubblejump-" + _abilitys[0] + ", dash-" + _abilitys[1] + ", walljump-" + _abilitys[2]);
+       
     }
 
     public void AddToSaveableObjects()
@@ -38,10 +36,8 @@ public class PlayerAbilitys : MonoBehaviour, ISaveable
     }
 
     public void SaveData()
-    {
-        print("saving abilitys");
-        SaveLoadManager.GetInstance.saveData.playerAbilityData = new PlayerAbilityData(_abilitys);
-               
+    {        
+        SaveLoadManager.GetInstance.saveData.playerAbilityData = new PlayerAbilityData(_abilitys);               
     }
 
 

@@ -4,11 +4,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System;
 
-public class PlayerHealth : MonoBehaviour, IDamageable
+public class PlayerHealth : MonoBehaviour, IDamageable, ISaveable
 {
 
     [SerializeField] int _maxHealth = 5;
-  
+    [SerializeField] int _extraHealthPerUpgrade = 1;
+
+    int _numUpgrades;
     int _currentHealth;
        
 
@@ -16,13 +18,22 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     void Awake()
     {
+        // add so number of upgrades will be saved and load data
+        AddToSaveableObjects();
+        LoadData();
+
+        // set max health to include number of uppgrades found
+        _maxHealth += (_numUpgrades * _extraHealthPerUpgrade);
         _currentHealth = _maxHealth;
+
+        // setup healthbar depending on uppgrades
+        UIManager.GetInstance.healthBar.SetupHealthBar(_numUpgrades);
+
         _playerRespawn = GetComponent<PlayerRespawn>();
-        UIManager.GetInstance.healthBar.SetupHealthBar(_maxHealth);
+       
     }
 
-    
-    // modify health
+        
     public void ModifyHealth(int health, bool instantRespawn = false)
     {
         // change health
@@ -45,8 +56,44 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         // Reload last savefile
         _playerRespawn.ReloadLastSave();
         
-    }      
-   
+    }
+
+    public void UpgradeMaxHealth()
+    {
+        // add one to found uppgrades
+        // add on to max health and reset currenthealth
+        _numUpgrades++;
+        _maxHealth += _extraHealthPerUpgrade;
+        _currentHealth = _maxHealth;
+
+        // upgrade healthbar(will get wider on moore maxhealth)
+        UIManager.GetInstance.healthBar.UpgradeHealthBar(_numUpgrades);
+    }
+
+    public void AddToSaveableObjects()
+    {
+        SaveLoadManager.GetInstance.AddSaveObject(this);
+    }
+
+    void LoadData()
+    {
+        // check if we have any saved data
+        PlayerHealthData data = SaveLoadManager.GetInstance.saveData.healthData;
+        if (data != null)
+        {
+            _numUpgrades = data.numHealthUpgrades;
+            print("NUM HEALTH UPPGRADES : " + _numUpgrades);
+        }
+    }
+
+    public void SaveData()
+    {
+        // save both to gamefile and to savefileinfo file(num uppgrades found will be shown in ui for each game in loadgame screen)
+        SaveLoadManager.GetInstance.saveData.healthData = new PlayerHealthData(_numUpgrades);
+        SaveLoadManager.GetInstance.savefileInfoData.numHealthUpgrades = _numUpgrades;
+
+    }
+
 
     void Update()
     {
@@ -68,7 +115,11 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
             UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
             
+
         }
+
+        if (Input.GetKeyDown(KeyCode.U))
+            UpgradeMaxHealth();
            
     }
 

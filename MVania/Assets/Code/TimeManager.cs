@@ -40,6 +40,8 @@ public class TimeManager : MonoBehaviour , ISaveable
 
         _hours = fileData.time[0];
         _minutes = fileData.time[1];
+
+        print("Time Played : " + _hours.ToString("00") + " " + _minutes.ToString("00"));
              
     }
 

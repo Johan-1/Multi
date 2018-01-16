@@ -137,8 +137,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (Input.GetButtonDown("Jump"))
             {
-                StartCoroutine(AnalogJump());
-                print("started");
+                StartCoroutine(AnalogJump());                
             }
                 
         }
@@ -165,8 +164,7 @@ public class PlayerMovement : MonoBehaviour
 
             if (Input.GetButton("Jump"))
             {
-                _rigidBody.velocity = new Vector2(_rigidBody.velocity.x, _jumpForce);
-                print("jump");
+                _rigidBody.velocity = new Vector2(_rigidBody.velocity.x, _jumpForce);               
             }                           
             else
                 yield break;

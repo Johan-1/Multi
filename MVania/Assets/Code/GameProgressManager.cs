@@ -57,6 +57,16 @@ public class GameProgressManager : MonoBehaviour, ISaveable
     {
         GameProgressData data = SaveLoadManager.GetInstance.saveData.gameProgressData;
         _powerUpPickedUp = data._powerUpPickedUp;
+
+
+        //debug
+        string[] names = new string[] { "doublejumpItem-", "dashitem-", "walljumpItem-"};
+        string all = "PICKEDUP ITEMS : ";
+
+        for (int i = 0; i < _powerUpPickedUp.Length; i++)
+            all += names[i] + _powerUpPickedUp[i] + ", ";
+
+            print(all);
         
     }
 
