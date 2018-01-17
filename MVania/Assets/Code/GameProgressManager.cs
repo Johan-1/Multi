@@ -10,7 +10,8 @@ public class GameProgressManager : MonoBehaviour, ISaveable
 
     // will hold witch powerup pickups that have been picked up
     bool[] _powerUpPickedUp = new bool[(int)PowerUp.POWERUPTYPE.SIZE];
-
+    bool[] _healthUpgradesPickedUp = new bool[10];
+ 
 
     void Awake()
     {
@@ -29,15 +30,25 @@ public class GameProgressManager : MonoBehaviour, ISaveable
         AddToSaveableObjects();
     }
 
-
+    //powerups
     public void SetPowerUpPickupStatus(int type, bool status)
     {
         _powerUpPickedUp[type] = status;
     }
-
     public bool GetPowerUpPickupStatus(int type)
     {
         return _powerUpPickedUp[type];
+    }
+
+    //healthupgrades
+    public void SetHealthPickupStatus(int id, bool status)
+    {
+        _healthUpgradesPickedUp[id] = status;
+    }
+
+    public bool GetHealthPickupStatus(int id)
+    {
+        return _healthUpgradesPickedUp[id]; 
     }
 
 
@@ -49,14 +60,15 @@ public class GameProgressManager : MonoBehaviour, ISaveable
 
     public void SaveData()
     {
-        SaveLoadManager.GetInstance.saveData.gameProgressData = new GameProgressData(_powerUpPickedUp);
+        SaveLoadManager.GetInstance.saveData.gameProgressData = new GameProgressData(_powerUpPickedUp, _healthUpgradesPickedUp);
     }
 
 
     public void SetupSaveData()
     {
         GameProgressData data = SaveLoadManager.GetInstance.saveData.gameProgressData;
-        _powerUpPickedUp = data._powerUpPickedUp;
+        _powerUpPickedUp = data.powerUpPickedUp;
+        _healthUpgradesPickedUp = data.healthUpgradePickedUp;
 
 
         //debug
@@ -74,6 +86,7 @@ public class GameProgressManager : MonoBehaviour, ISaveable
     {
         //clear all data so we go in clean in new game
         _powerUpPickedUp = new bool[(int)PowerUp.POWERUPTYPE.SIZE];
+        _healthUpgradesPickedUp = new bool[10];
 
     }
 

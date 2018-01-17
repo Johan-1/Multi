@@ -176,13 +176,12 @@ public class PlayerMovement : MonoBehaviour
 
     bool CheckGrounded()
     {
-
-        // always want back raycast to be a bit behind player when jumping of edges
+       
         float[] xOffset;
         if (_movingRight)
-            xOffset = new float[3] { -1.0f, 0.0f, 0.35f };
+            xOffset = new float[3] { -0.35f, 0.0f, 0.35f };
         else
-            xOffset = new float[3] { -0.35f, 0.0f, 1.0f };
+            xOffset = new float[3] { -0.35f, 0.0f, 0.35f };
 
         float yOffset = -0.3f;
         float lenght = 0.2f;

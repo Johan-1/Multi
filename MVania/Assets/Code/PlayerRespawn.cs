@@ -44,8 +44,9 @@ public class PlayerRespawn : MonoBehaviour
 
     }
 
+    // respawn in room when taking damage on something that want you to start the room over(pits,spikes etc)
     IEnumerator RespawnCo()
-    {
+    {        
         //disable player
         _isHandelingRespawn = true;
 
@@ -58,20 +59,16 @@ public class PlayerRespawn : MonoBehaviour
         transform.position = _respawnPosition;
         GetComponent<SpriteRenderer>().enabled = true;
        
-
         UIManager.GetInstance.screenfade.FadeIn(_fadingTime, _stayBlackTime);
 
         yield return new WaitForSeconds(_fadingTime + _stayBlackTime);
 
         EnablePlayer();
 
-        _isHandelingRespawn = false;
-
-        
-
-
+        _isHandelingRespawn = false;       
     }
 
+    // when all health is lost, reload last save
     IEnumerator ReloadLastSaveCo()
     {
         _isHandelingRespawn = true;
@@ -81,29 +78,18 @@ public class PlayerRespawn : MonoBehaviour
         UIManager.GetInstance.screenfade.FadeOut(_fadingTime,_waitBeforeRespawn);
 
         yield return new WaitForSeconds(_fadingTime + _stayBlackTime + _waitBeforeRespawn);
-               
+
         // check if we have any savedata
         if (SaveLoadManager.GetInstance.saveData.sceneData != null)
         {
             // if we have saved data, reset the state of the game to when we last saved
             SaveLoadManager.GetInstance.LoadGame("Respawn");
-            UIManager.GetInstance.screenfade.FadeIn(1.0f,1.0f);
+            UIManager.GetInstance.screenfade.FadeIn(1.0f, 1.0f);
             Destroy(gameObject);
         }
-        else
-        {
-            // if not set position to first room and load it
-            // TODO : should have save data by just starting a new game with this info
-            transform.position = new Vector3(0, 4, 0);
-            SceneManager.LoadScene("Screen1");
-            
-
-            yield return new WaitForSeconds(1.0f);
-
-            EnablePlayer();
-            _isHandelingRespawn = false;
-
-        }
+        else // if not something have gone horribly wrong
+            print("Cant find savefile to reload last save");
+        
 
     }
 

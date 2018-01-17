@@ -39,5 +39,22 @@ public class CameraMovement : MonoBehaviour
 
     }
 
+    void OnDrawGizmos()
+    {
+
+        // draw the bounding box of camera clamps
+        Camera camera = GetComponent<Camera>();
+        
+        float height = 2.0f * camera.orthographicSize;
+        float width = height * camera.aspect;
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(new Vector3(_XClampMinMax.y + (width * 0.5f), _YClampMinMax.y + (height * 0.5f), 0), new Vector3(_XClampMinMax.y + (width * 0.5f), _YClampMinMax.x - (height * 0.5f), 0));
+        Gizmos.DrawLine(new Vector3(_XClampMinMax.x - (width * 0.5f), _YClampMinMax.y + (height * 0.5f), 0), new Vector3(_XClampMinMax.x - (width * 0.5f), _YClampMinMax.x - (height * 0.5f), 0));
+        Gizmos.DrawLine(new Vector3(_XClampMinMax.x - (width * 0.5f), _YClampMinMax.y + (height * 0.5f), 0), new Vector3(_XClampMinMax.y + (width * 0.5f), _YClampMinMax.y + (height * 0.5f), 0));
+        Gizmos.DrawLine(new Vector3(_XClampMinMax.x - (width * 0.5f), _YClampMinMax.x - (height * 0.5f), 0), new Vector3(_XClampMinMax.y + (width * 0.5f), _YClampMinMax.x - (height * 0.5f), 0));
+
+         
+    }
 
 }

@@ -28,8 +28,8 @@ public class SaveLoadManager : MonoBehaviour
     List<ISaveable> _saveableObjects = new List<ISaveable>();
 
     // witch file we are playing the game with
-    string _saveFile; 
-    public string saveFile { set { _saveFile = value; } }
+    string _saveFileName; 
+    public string saveFilename { set { _saveFileName = value; } }
 
     
 
@@ -56,16 +56,16 @@ public class SaveLoadManager : MonoBehaviour
             
         //save data to game savefile
         BinaryFormatter bf = new BinaryFormatter();
-        FileStream fs = new FileStream(Application.persistentDataPath + "/" + _saveFile ,FileMode.Create);        
+        FileStream fs = new FileStream(Application.persistentDataPath + "/" + _saveFileName ,FileMode.Create);        
         bf.Serialize(fs, _saveData);
         fs.Close();
 
         //save data to info savefile      
-        fs = new FileStream(Application.persistentDataPath + "/Info" + _saveFile, FileMode.Create);
+        fs = new FileStream(Application.persistentDataPath + "/Info" + _saveFileName, FileMode.Create);
         bf.Serialize(fs, _savefileInfoData);
         fs.Close();
 
-        print("saved to file " + _saveFile);
+        print("saved to file " + _saveFileName);
 
 
     }   
@@ -74,7 +74,7 @@ public class SaveLoadManager : MonoBehaviour
     {
         // if gameover reload game from last save
         if (file == "Respawn")
-            file = _saveFile;
+            file = _saveFileName;
 
         if (File.Exists(Application.persistentDataPath + "/" + file))
         {
@@ -86,7 +86,7 @@ public class SaveLoadManager : MonoBehaviour
             fs.Close();
             
             // set witch file we loaded so we know where to save new progress
-            _saveFile = file;
+            _saveFileName = file;
 
             // tell the gameProgressManager to set its data that we just loaded
             // this have info of example defeated bosses, picked up items, locked doors etc 
@@ -192,11 +192,13 @@ public class PlayerHealthData
 [Serializable]
 public class GameProgressData
 {
-    public bool[] _powerUpPickedUp;
+    public bool[] powerUpPickedUp;
+    public bool[] healthUpgradePickedUp;
 
-    public GameProgressData(bool[] powerUpPickedUp)
+    public GameProgressData(bool[] powerUp, bool[] healthUpgrade)
     {
-        _powerUpPickedUp = powerUpPickedUp;
+        powerUpPickedUp = powerUp;
+        healthUpgradePickedUp = healthUpgrade;
     }
 
 }

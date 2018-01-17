@@ -2238,7 +2238,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _XClampMinMax: {x: 82.9, y: 121.7}
-  _YClampMinMax: {x: 4.76, y: 11.45}
+  _YClampMinMax: {x: 6.44, y: 11.45}
 --- !u!1001 &919414639
 Prefab:
   m_ObjectHideFlags: 0

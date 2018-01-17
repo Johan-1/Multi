@@ -55,7 +55,7 @@ public class MainMenu : MonoBehaviour
 
     public void FileSelected(int buttonId)
     {        
-        StartGameWithFile("Game" + buttonId + ".data", buttonId);        
+        StartGameWithFile("Game" + buttonId + ".data");        
     }
 
     public void DeleteFileSelected(int buttonId)
@@ -63,7 +63,7 @@ public class MainMenu : MonoBehaviour
         DeleteGame("Game" + buttonId + ".data", buttonId);
     }
     
-    void StartGameWithFile(string file, int fileID)
+    void StartGameWithFile(string file)
     {
 
         if (File.Exists(Application.persistentDataPath + "/" + file))
@@ -71,15 +71,22 @@ public class MainMenu : MonoBehaviour
             SaveLoadManager.GetInstance.LoadGame(file);
         }
         else
-            StartNewGame(file,fileID);
+            StartNewGame(file);
     }
 
-    void StartNewGame(string file, int fileID)
+    void StartNewGame(string file)
     {   
-        //TODO: make players being able to type in a name
-        
-        SaveLoadManager.GetInstance.saveFile = file;       
-        GameObject player = Instantiate(_player);       
+                
+        // create player     
+        GameObject player = Instantiate(_player);
+
+        // tell saveloadmanager witch file to save data to
+        SaveLoadManager.GetInstance.saveFilename = file;
+
+        // save base data to file, (if we die without having saved in game, this data will be loaded)
+        SaveLoadManager.GetInstance.saveData.sceneData = new Scenedata("Screen1", new float[3] { 0, 3, 0 });
+        SaveLoadManager.GetInstance.SaveGame(); 
+
         SceneManager.LoadScene("Screen1");
     }
 
