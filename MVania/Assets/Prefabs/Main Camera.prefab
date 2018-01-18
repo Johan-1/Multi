@@ -64,7 +64,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 8
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -107,6 +107,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _XClampMinMax: {x: 0, y: 0}
   _YClampMinMax: {x: 0, y: 0}
+  _boundingboxXPosNeg: {x: 0, y: 0}
+  _boundingboxYPosNeg: {x: 0, y: 0}
+  _playerBoundingbox: {fileID: 11400000, guid: 491aa9cd81fda164f90f58584a3b5421, type: 2}
 --- !u!124 &124100483629973864
 Behaviour:
   m_ObjectHideFlags: 1

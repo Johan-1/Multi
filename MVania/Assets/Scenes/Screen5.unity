@@ -1458,6 +1458,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _XClampMinMax: {x: 128.74, y: 134.21}
   _YClampMinMax: {x: 30.3, y: 30.3}
+  _boundingboxXPosNeg: {x: 0, y: 0}
+  _boundingboxYPosNeg: {x: 0, y: 0}
+  _playerBoundingbox: {fileID: 11400000, guid: 491aa9cd81fda164f90f58584a3b5421, type: 2}
 --- !u!1001 &1643337280
 Prefab:
   m_ObjectHideFlags: 0
