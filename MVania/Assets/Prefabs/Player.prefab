@@ -205,6 +205,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHealth: 5
+  _extraHealthPerUpgrade: 1
+  _knockbackForce: {x: 10, y: 15}
+  _knockbackTime: 0.2
+  _invinsibilityTime: 1
+  _flashTime: 0.1
+  _flashColor: {r: 1, g: 0, b: 0, a: 0.363}
 --- !u!114 &114924633541823052
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -216,8 +222,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fbca4bb668b083458a600d4e49c40f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uiManager: {fileID: 114451598510305728, guid: db03a93bf4aaf494b9ada9819df64090,
-    type: 2}
 --- !u!212 &212343364836917666
 SpriteRenderer:
   m_ObjectHideFlags: 1
