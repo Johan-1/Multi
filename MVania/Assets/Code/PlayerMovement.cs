@@ -25,10 +25,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float _timeDashing = 0.2f;
     [SerializeField] float _dashSpeed = 10.0f;
     [SerializeField] float _dashCooldown = 2.0f;
-    
-        
-    
-
+              
     // movement/jump privates   
     float _xInput;
     int _airJumpCount = 0;   
@@ -38,18 +35,14 @@ public class PlayerMovement : MonoBehaviour
     // references
     Rigidbody2D _rigidBody;
     PlayerAbilitys _playerAbilitys;
-
-    
+   
     [Flags] enum MOVEMENTFLAGS
     {
         NONE            = 0,
         GROUNDED        = 1 << 0,
         LOCKEDVELOCITY  = 1 << 1,
-        ONWALL          = 1 << 2,
-        WALLJUMPING     = 1 << 3,        
-        DASHING         = 1 << 4,
-        DASHREADY       = 1 << 5,
-        KNOCKBACK       = 1 << 6,
+        ONWALL          = 1 << 2,       
+        DASHREADY       = 1 << 3,      
     }
 
     MOVEMENTFLAGS _MOVEFLAGS = MOVEMENTFLAGS.DASHREADY;
@@ -77,8 +70,6 @@ public class PlayerMovement : MonoBehaviour
         return (_MOVEFLAGS & flags) == 0;     
     }
 
-
-
     void Start()
     {        
         _rigidBody = GetComponent<Rigidbody2D>();
@@ -86,7 +77,6 @@ public class PlayerMovement : MonoBehaviour
         
         DontDestroyOnLoad(this);                               
     }
-
 
     void Update()
     {
@@ -99,17 +89,16 @@ public class PlayerMovement : MonoBehaviour
         if(_playerAbilitys.AbilityUnlocked(PowerUp.POWERUPTYPE.DASH))
             HandleDashing();
     }
-
-    
-
+  
     void HandleMovement()
     {
-        if (HasFlag(MOVEMENTFLAGS.KNOCKBACK))
-            return;
-
         // get x input 
         _xInput = Input.GetAxisRaw("Horizontal");
-       
+
+        // only can move if velocity is not locked to an ability and we are not wall sliding(moving of wall is handled in wallsliding function)
+        if (HasFlag(MOVEMENTFLAGS.LOCKEDVELOCITY) || HasFlag(MOVEMENTFLAGS.ONWALL) && !HasFlag(MOVEMENTFLAGS.GROUNDED))
+            return;
+               
         // change forward facing of player depending on moving left/right
         if (_xInput < 0)
         {
@@ -121,11 +110,7 @@ public class PlayerMovement : MonoBehaviour
             transform.right = Vector2.right;
             _movingRight = true;
         }
-
-        // if our velocity is locked return without setting 
-        if (HasFlag(MOVEMENTFLAGS.LOCKEDVELOCITY) || HasFlag(MOVEMENTFLAGS.ONWALL))
-            return;
-        
+                
          _rigidBody.velocity = new Vector2(_xInput * _moveSpeed, _rigidBody.velocity.y);
 
     }
@@ -139,11 +124,8 @@ public class PlayerMovement : MonoBehaviour
         // check if grounded 
         if (CheckGrounded())
         {
-            if (Input.GetButtonDown("Jump"))
-            {
-                StartCoroutine(AnalogJump());                
-            }
-                
+            if (Input.GetButtonDown("Jump"))            
+                StartCoroutine(AnalogJump());                                           
         }
         else if (_playerAbilitys.AbilityUnlocked(PowerUp.POWERUPTYPE.AIRJUMP) && !HasFlag(MOVEMENTFLAGS.ONWALL)) // if not grounded check if airjump ability is unlocked and that we are not on a wall
         {
@@ -166,10 +148,8 @@ public class PlayerMovement : MonoBehaviour
         {
             time += Time.deltaTime;
 
-            if (Input.GetButton("Jump"))
-            {
-                _rigidBody.velocity = new Vector2(_rigidBody.velocity.x, _jumpForce);               
-            }                           
+            if (Input.GetButton("Jump"))            
+                _rigidBody.velocity = new Vector2(_rigidBody.velocity.x, _jumpForce);                                                    
             else
                 yield break;
 
@@ -181,12 +161,8 @@ public class PlayerMovement : MonoBehaviour
     bool CheckGrounded()
     {
        
-        float[] xOffset;
-        if (_movingRight)
-            xOffset = new float[3] { -0.35f, 0.0f, 0.35f };
-        else
-            xOffset = new float[3] { -0.35f, 0.0f, 0.35f };
-
+        // ray info
+        float[] xOffset = new float[3] { -0.35f, 0.0f, 0.35f };               
         float yOffset = -0.3f;
         float lenght = 0.2f;
         int hitCount = 0;
@@ -201,7 +177,6 @@ public class PlayerMovement : MonoBehaviour
                  hitCount++;
 
             Debug.DrawLine(origin, origin + new Vector3(0, -lenght, 0), Color.red); // debug lines  
-
         }
 
         // if atleast one hit we are standing on ground
@@ -234,11 +209,9 @@ public class PlayerMovement : MonoBehaviour
             _airJumpCount = 0;
 
             // if jump is pressed and we are not dashing in wall do walljump
-            if (Input.GetButtonDown("Jump") && !HasFlag(MOVEMENTFLAGS.DASHING))
-            {               
+            if (Input.GetButtonDown("Jump") && !HasFlag(MOVEMENTFLAGS.LOCKEDVELOCITY))                          
                 StartCoroutine(DoWalljump());
-            }
-                
+                           
         }       
            
     }
@@ -248,8 +221,7 @@ public class PlayerMovement : MonoBehaviour
         // lock the player from controll while push out from wall  
         // set walljump to true so we add force during physics uppdate
         AddFlag(MOVEMENTFLAGS.LOCKEDVELOCITY);
-        AddFlag(MOVEMENTFLAGS.WALLJUMPING);       
-       
+                     
         // set positive or negative force depending on if wall is to our left or right
         float xVelocity = _movingRight ? -Vector3.right.x * _wallPushOutForce.x : Vector3.right.x * _wallPushOutForce.x;
 
@@ -270,8 +242,7 @@ public class PlayerMovement : MonoBehaviour
 
         // give player back the control        
         RemoveFlag(MOVEMENTFLAGS.LOCKEDVELOCITY);
-        RemoveFlag(MOVEMENTFLAGS.WALLJUMPING);
-
+        
     }
 
     void RaycastWall()
@@ -290,8 +261,8 @@ public class PlayerMovement : MonoBehaviour
         _wallTimer += Time.deltaTime;
 
         // check if we have input away from wall
-        // if true we will stick to wall for a little longer before we let go
-        // this make us still be abble to walljump even if we have x-input before jump input
+        // if true we will stick to wall for a little longer before we allow velocity change
+        // this make us still be abble to walljump even if we have x-input away from wall before jump input
         if (_movingRight && _xInput < 0)
         {
             if (_wallTimer > _dropFromWallDelay)              
@@ -308,17 +279,15 @@ public class PlayerMovement : MonoBehaviour
 
     void HandleDashing()
     {
-        if (DontHaveFlags(MOVEMENTFLAGS.GROUNDED | MOVEMENTFLAGS.WALLJUMPING | MOVEMENTFLAGS.LOCKEDVELOCITY) && HasFlag(MOVEMENTFLAGS.DASHREADY) && Input.GetButtonDown("Fire1") )
-        {            
+        if (DontHaveFlags(MOVEMENTFLAGS.GROUNDED | MOVEMENTFLAGS.LOCKEDVELOCITY) && HasFlag(MOVEMENTFLAGS.DASHREADY) && Input.GetButtonDown("Fire1") )                   
             StartCoroutine(Dash());
-        }
+        
     }
 
     IEnumerator Dash()
     {
         // add and remove flags
-        AddFlag(MOVEMENTFLAGS.LOCKEDVELOCITY);
-        AddFlag(MOVEMENTFLAGS.DASHING);
+        AddFlag(MOVEMENTFLAGS.LOCKEDVELOCITY);      
         RemoveFlag(MOVEMENTFLAGS.DASHREADY);
 
         // set velocity depending if moving left/right
@@ -344,8 +313,7 @@ public class PlayerMovement : MonoBehaviour
 
         // remove flags
         RemoveFlag(MOVEMENTFLAGS.LOCKEDVELOCITY);
-        RemoveFlag(MOVEMENTFLAGS.DASHING);
-
+        
         yield return new WaitForSeconds(_dashCooldown);
          // add flag that dashcooldown is over
         AddFlag(MOVEMENTFLAGS.DASHREADY);
@@ -371,9 +339,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     IEnumerator DoKnockback(Vector2 knockbackForce, float knockbackTime)
-    {
-
-        AddFlag(MOVEMENTFLAGS.KNOCKBACK);
+    {        
         AddFlag(MOVEMENTFLAGS.LOCKEDVELOCITY);
 
         // set velcity of knockback depending if moving left/right
@@ -386,10 +352,9 @@ public class PlayerMovement : MonoBehaviour
             timer += Time.deltaTime;
             yield return null;
         }
-
-        RemoveFlag(MOVEMENTFLAGS.KNOCKBACK);
+      
         RemoveFlag(MOVEMENTFLAGS.LOCKEDVELOCITY);
-        yield return null;
+        
     }
 
 }

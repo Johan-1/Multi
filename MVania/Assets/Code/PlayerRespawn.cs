@@ -72,6 +72,7 @@ public class PlayerRespawn : MonoBehaviour
     }
 
     // when all health is lost, reload last save
+    // not decided how gameovers should work yet, loose all progress like it is now or maybe keep some progress like pickedup items etc
     IEnumerator ReloadLastSaveCo()
     {
         _isHandelingRespawn = true;
@@ -86,7 +87,7 @@ public class PlayerRespawn : MonoBehaviour
         if (SaveLoadManager.GetInstance.saveData.sceneData != null)
         {
             // if we have saved data, reset the state of the game to when we last saved
-            SaveLoadManager.GetInstance.LoadGame("Respawn");
+            SaveLoadManager.GetInstance.LoadGame("Respawn"); // respawn is "magic" word for know to load last savefile
             UIManager.GetInstance.screenfade.FadeIn(1.0f, 1.0f);
             Destroy(gameObject);
         }
