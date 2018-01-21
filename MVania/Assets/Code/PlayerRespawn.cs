@@ -47,25 +47,28 @@ public class PlayerRespawn : MonoBehaviour
     // respawn in room when taking damage on something that want you to start the room over(pits,spikes etc)
     IEnumerator RespawnCo()
     {        
-        //disable player
+        //disable player and set that we are handeling respawn
         _isHandelingRespawn = true;
-
         DisablePlayer();
         
+        // fade out to black and wait untill done
         UIManager.GetInstance.screenfade.FadeOut(_fadingTime, _waitBeforeRespawn);
-
         yield return new WaitForSeconds(_fadingTime + _waitBeforeRespawn);
 
+        // respawn player and enable renderer
         transform.position = _respawnPosition;
         GetComponent<SpriteRenderer>().enabled = true;
        
+        // fade back in and wait untill done
         UIManager.GetInstance.screenfade.FadeIn(_fadingTime, _stayBlackTime);
-
         yield return new WaitForSeconds(_fadingTime + _stayBlackTime);
 
+        // enable player and set that respawn is finished
         EnablePlayer();
+        _isHandelingRespawn = false;
 
-        _isHandelingRespawn = false;       
+        // set that we now again can take damage
+        GetComponent<PlayerHealth>().isInvinsible = false;
     }
 
     // when all health is lost, reload last save

@@ -8,7 +8,7 @@ public class DamageZone : MonoBehaviour
     [SerializeField] int _damage = 1;
     [SerializeField] bool _instantRespawn = false;
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerStay2D(Collider2D other)
     {
         if (other.GetComponent<IDamageable>() != null)
         {

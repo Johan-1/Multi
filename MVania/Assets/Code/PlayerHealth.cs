@@ -10,10 +10,20 @@ public class PlayerHealth : MonoBehaviour, IDamageable, ISaveable
     [SerializeField] int _maxHealth = 5;
     [SerializeField] int _extraHealthPerUpgrade = 1;
 
+    [Space(5), Header("KNOCKBACK AND INVINSIBILITY"), Space(5)]
+    [SerializeField] Vector2 _knockbackForce = new Vector2(0.5f, 2.0f);
+    [SerializeField] float _knockbackTime = 0.2f;
+    [SerializeField] float _invinsibilityTime = 0.5f;
+    [SerializeField] float _flashTime = 0.1f;
+    [SerializeField] Color _flashColor;
+
+    // privates
     int _numUpgrades;
     int _currentHealth;
-       
+    Color _originalColor;
+    bool _isinvinisible; public bool isInvinsible { get { return _isinvinisible; } set { _isinvinisible = value; } }
 
+    // references
     PlayerRespawn _playerRespawn;
 
     void Awake()
@@ -29,6 +39,9 @@ public class PlayerHealth : MonoBehaviour, IDamageable, ISaveable
         // setup healthbar depending on uppgrades
         UIManager.GetInstance.healthBar.SetupHealthBar(_numUpgrades);
 
+        // get the color of the sprite
+        _originalColor = GetComponent<SpriteRenderer>().color;
+
         _playerRespawn = GetComponent<PlayerRespawn>();
        
     }
@@ -36,21 +49,32 @@ public class PlayerHealth : MonoBehaviour, IDamageable, ISaveable
         
     public void ModifyHealth(int health, bool instantRespawn = false)
     {
-        // change health
-        _currentHealth += health;
+        // only do damage if we are not invincible (can still respawn on instantRespawn damaging objects, just without taking damage)
+        if (!_isinvinisible)
+        {
+            _currentHealth += health;
 
-        // uppdate healthbar
-        UIManager.GetInstance.healthBar.ModifyHealthbar(_currentHealth, _maxHealth);
-
-        // if health is 0 player is dead, else check if instantrespawn is true and respawn player to last respawn point (spikes etc can do 1 damage but will return player to begining of room)
-        if (_currentHealth <= 0)       
-            Die();                   
-        else if (instantRespawn)
-            _playerRespawn.RespawnPlayer();
+            // uppdate healthbar
+            UIManager.GetInstance.healthBar.ModifyHealthbar(_currentHealth, _maxHealth);
+        }
                    
+        // if health is 0 player is dead, else check if instantrespawn is true and respawn player to last respawn point (spikes etc can do 1 damage but will return player to begining of room)
+        if (_currentHealth <= 0)
+            Die();
+        else if (instantRespawn)
+        {
+            // dont want to be abble to take damage while respawning(will be set back when respawning is done)
+            _isinvinisible = true;
+            _playerRespawn.RespawnPlayer();
+        }            
+        else if(!_isinvinisible) // if we are not dead and instant respawn is false, do a knockback and start invinsible routines
+        {
+            Knockback();
+            StartCoroutine(Invinsible());
+            StartCoroutine(InvinisbleEffect());
+        }                            
     }
    
-
     public void Die()
     {
         // Reload last savefile
@@ -68,6 +92,42 @@ public class PlayerHealth : MonoBehaviour, IDamageable, ISaveable
 
         // upgrade healthbar(will get wider on moore maxhealth)
         UIManager.GetInstance.healthBar.UpgradeHealthBar(_numUpgrades);
+    }
+
+    public void Knockback()
+    {
+        // knockback is handled in playermovement
+        GetComponent<PlayerMovement>().HandleKnockback(_knockbackForce, _knockbackTime);
+    }
+
+    IEnumerator Invinsible()
+    {
+        // set invinisble to true and set it back after invinsibletime
+        _isinvinisible = true;
+        float timer = 0.0f;
+        while (timer < _invinsibilityTime)
+        {
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        _isinvinisible = false;
+    }
+
+    IEnumerator InvinisbleEffect()
+    {        
+        while (_isinvinisible)
+        {
+            SpriteRenderer sr = GetComponent<SpriteRenderer>();
+
+            // switch between original spritecolor and flashcolor during invincibletime
+            sr.color = _flashColor;
+            yield return new WaitForSeconds(_flashTime);
+            sr.color = _originalColor;
+            yield return new WaitForSeconds(_flashTime);
+
+        }
+        
     }
 
     public void AddToSaveableObjects()
@@ -104,7 +164,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable, ISaveable
             ModifyHealth(1);
 
         // debug stuff just here for the moment
-        // go back to main menu
+        // go back to main menu TODO: MOVE TO A PAUS MENU
         if (Input.GetKeyDown(KeyCode.H))
         {
             SaveLoadManager.GetInstance.ClearData();

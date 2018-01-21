@@ -49,6 +49,7 @@ public class PlayerMovement : MonoBehaviour
         WALLJUMPING     = 1 << 3,        
         DASHING         = 1 << 4,
         DASHREADY       = 1 << 5,
+        KNOCKBACK       = 1 << 6,
     }
 
     MOVEMENTFLAGS _MOVEFLAGS = MOVEMENTFLAGS.DASHREADY;
@@ -103,16 +104,19 @@ public class PlayerMovement : MonoBehaviour
 
     void HandleMovement()
     {
+        if (HasFlag(MOVEMENTFLAGS.KNOCKBACK))
+            return;
+
         // get x input 
         _xInput = Input.GetAxisRaw("Horizontal");
        
         // change forward facing of player depending on moving left/right
-        if (_rigidBody.velocity.x != 0 && _rigidBody.velocity.x < 0)
+        if (_xInput < 0)
         {
             transform.right = -Vector2.right;
             _movingRight = false;
         }
-        else if (_rigidBody.velocity.x != 0 && _rigidBody.velocity.x > 0)
+        else if (_xInput > 0)
         {
             transform.right = Vector2.right;
             _movingRight = true;
@@ -304,7 +308,7 @@ public class PlayerMovement : MonoBehaviour
 
     void HandleDashing()
     {
-        if (DontHaveFlags(MOVEMENTFLAGS.GROUNDED | MOVEMENTFLAGS.WALLJUMPING) && HasFlag(MOVEMENTFLAGS.DASHREADY) && Input.GetButtonDown("Fire1") )
+        if (DontHaveFlags(MOVEMENTFLAGS.GROUNDED | MOVEMENTFLAGS.WALLJUMPING | MOVEMENTFLAGS.LOCKEDVELOCITY) && HasFlag(MOVEMENTFLAGS.DASHREADY) && Input.GetButtonDown("Fire1") )
         {            
             StartCoroutine(Dash());
         }
@@ -312,14 +316,23 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator Dash()
     {
+        // add and remove flags
         AddFlag(MOVEMENTFLAGS.LOCKEDVELOCITY);
         AddFlag(MOVEMENTFLAGS.DASHING);
         RemoveFlag(MOVEMENTFLAGS.DASHREADY);
-        
-       // check if we are on wall, if on wall check if wall is to left or right and set velocity to oposite direction
-       // if not on wall, check if we are moving left or right and set velocity to the same direction
-        Vector2 velocity = HasFlag(MOVEMENTFLAGS.ONWALL) ? _movingRight ? -Vector3.right * _dashSpeed : Vector3.right * _dashSpeed : _movingRight ? Vector3.right * _dashSpeed : -Vector3.right * _dashSpeed;
 
+        // set velocity depending if moving left/right
+        Vector2 velocity = _movingRight ? Vector3.right * _dashSpeed : -Vector3.right * _dashSpeed;
+
+        // if we are dashing from a wall, invert velocity and movedirection
+        if (HasFlag(MOVEMENTFLAGS.ONWALL))
+        {
+            velocity = -velocity;
+            _movingRight = !_movingRight;
+            transform.right = -transform.right;           
+        }
+
+        // add velocity as long as in dash
         float timer = 0.0f;
         while (timer < _timeDashing)
         {
@@ -329,20 +342,54 @@ public class PlayerMovement : MonoBehaviour
             yield return null;
         }
 
-        
+        // remove flags
         RemoveFlag(MOVEMENTFLAGS.LOCKEDVELOCITY);
         RemoveFlag(MOVEMENTFLAGS.DASHING);
 
         yield return new WaitForSeconds(_dashCooldown);
-
+         // add flag that dashcooldown is over
         AddFlag(MOVEMENTFLAGS.DASHREADY);
 
     }
 
     void OnDisable()
     {
+        // abort all specialmovement if any is ongoing
+        // gets called on death and respawn
         StopAllCoroutines();
         _MOVEFLAGS = MOVEMENTFLAGS.DASHREADY;
+    }
+
+    // gets called from healthcomponent on getting hit
+    public void HandleKnockback(Vector2 knockbackForce, float knockbackTime)
+    {
+        // stop all specialmovement when getting knockedback (ex if in dash when taking a hit)
+        StopAllCoroutines();
+        _MOVEFLAGS = MOVEMENTFLAGS.DASHREADY;
+
+        StartCoroutine(DoKnockback(knockbackForce, knockbackTime));
+    }
+
+    IEnumerator DoKnockback(Vector2 knockbackForce, float knockbackTime)
+    {
+
+        AddFlag(MOVEMENTFLAGS.KNOCKBACK);
+        AddFlag(MOVEMENTFLAGS.LOCKEDVELOCITY);
+
+        // set velcity of knockback depending if moving left/right
+        _rigidBody.velocity = _movingRight ? (-Vector3.right * knockbackForce.x) + (Vector3.up * knockbackForce.y) : (Vector3.right * knockbackForce.x) + (Vector3.up * knockbackForce.y);
+
+        // the amount of time the player looses control
+        float timer = 0.0f;
+        while (timer < knockbackTime)
+        {           
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        RemoveFlag(MOVEMENTFLAGS.KNOCKBACK);
+        RemoveFlag(MOVEMENTFLAGS.LOCKEDVELOCITY);
+        yield return null;
     }
 
 }
