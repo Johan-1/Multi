@@ -42,7 +42,8 @@ public class PlayerMovement : MonoBehaviour
         GROUNDED        = 1 << 0,
         LOCKEDVELOCITY  = 1 << 1,
         ONWALL          = 1 << 2,       
-        DASHREADY       = 1 << 3,      
+        DASHREADY       = 1 << 3, 
+        DISABLED        = 1 << 4,
     }
 
     MOVEMENTFLAGS _MOVEFLAGS = MOVEMENTFLAGS.DASHREADY;
@@ -80,6 +81,9 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        if (HasFlag(MOVEMENTFLAGS.LOCKEDVELOCITY) || HasFlag(MOVEMENTFLAGS.DISABLED))
+            return;
+
         HandleMovement();
         HandleJumping();
 
@@ -96,7 +100,7 @@ public class PlayerMovement : MonoBehaviour
         _xInput = Input.GetAxisRaw("Horizontal");
 
         // only can move if velocity is not locked to an ability and we are not wall sliding(moving of wall is handled in wallsliding function)
-        if (HasFlag(MOVEMENTFLAGS.LOCKEDVELOCITY) || HasFlag(MOVEMENTFLAGS.ONWALL) && !HasFlag(MOVEMENTFLAGS.GROUNDED))
+        if (HasFlag(MOVEMENTFLAGS.ONWALL) && !HasFlag(MOVEMENTFLAGS.GROUNDED))
             return;
                
         // change forward facing of player depending on moving left/right
@@ -116,11 +120,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     void HandleJumping()
-    {
-        // return if our velocity is controlled from something else
-        if (HasFlag(MOVEMENTFLAGS.LOCKEDVELOCITY))
-            return;
-
+    {       
         // check if grounded 
         if (CheckGrounded())
         {
@@ -207,9 +207,8 @@ public class PlayerMovement : MonoBehaviour
 
             // reset airjumps if on wall
             _airJumpCount = 0;
-
-            // if jump is pressed and we are not dashing in wall do walljump
-            if (Input.GetButtonDown("Jump") && !HasFlag(MOVEMENTFLAGS.LOCKEDVELOCITY))                          
+           
+            if (Input.GetButtonDown("Jump"))                          
                 StartCoroutine(DoWalljump());
                            
         }       
@@ -279,7 +278,7 @@ public class PlayerMovement : MonoBehaviour
 
     void HandleDashing()
     {
-        if (DontHaveFlags(MOVEMENTFLAGS.GROUNDED | MOVEMENTFLAGS.LOCKEDVELOCITY) && HasFlag(MOVEMENTFLAGS.DASHREADY) && Input.GetButtonDown("Fire1") )                   
+        if (!HasFlag(MOVEMENTFLAGS.GROUNDED) && HasFlag(MOVEMENTFLAGS.DASHREADY) && Input.GetButtonDown("Dash") )                   
             StartCoroutine(Dash());
         
     }
@@ -357,4 +356,13 @@ public class PlayerMovement : MonoBehaviour
         
     }
 
+    public void DisableInput()
+    {
+        AddFlag(MOVEMENTFLAGS.DISABLED);
+    }
+
+    public void EnableInput()
+    {
+        RemoveFlag(MOVEMENTFLAGS.DISABLED);
+    }
 }

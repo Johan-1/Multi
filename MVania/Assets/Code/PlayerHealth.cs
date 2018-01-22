@@ -151,7 +151,6 @@ public class PlayerHealth : MonoBehaviour, IDamageable, ISaveable
         // save both to gamefile and to savefileinfo file(num uppgrades found will be shown in ui for each game in loadgame screen)
         SaveLoadManager.GetInstance.saveData.healthData = new PlayerHealthData(_numUpgrades);
         SaveLoadManager.GetInstance.savefileInfoData.numHealthUpgrades = _numUpgrades;
-
     }
 
 
@@ -162,22 +161,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable, ISaveable
 
         if (Input.GetKeyDown(KeyCode.M))
             ModifyHealth(1);
-
-        // debug stuff just here for the moment
-        // go back to main menu TODO: MOVE TO A PAUS MENU
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            SaveLoadManager.GetInstance.ClearData();
-            GameProgressManager.GetInstance.ClearData();
-            UIManager.GetInstance.DisableUI();
-            FindObjectOfType<CameraMovement>().enabled = false;
-            Destroy(FindObjectOfType<PlayerAbilitys>().gameObject);
-
-            UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
-            
-
-        }
-
+        
         if (Input.GetKeyDown(KeyCode.U))
             UpgradeMaxHealth();
            

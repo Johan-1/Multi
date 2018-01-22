@@ -10,7 +10,7 @@ public class PlayerAbilitys : MonoBehaviour, ISaveable
    
     
   
-    void Start()
+    void Awake()
     {
         AddToSaveableObjects();
 
@@ -37,7 +37,8 @@ public class PlayerAbilitys : MonoBehaviour, ISaveable
 
     public void SaveData()
     {        
-        SaveLoadManager.GetInstance.saveData.playerAbilityData = new PlayerAbilityData(_abilitys);               
+        SaveLoadManager.GetInstance.saveData.playerAbilityData = new PlayerAbilityData(_abilitys);
+        print("saving abilitys");
     }
 
 

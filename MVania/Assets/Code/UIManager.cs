@@ -14,6 +14,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] ScreenFade _screenFade;
     public ScreenFade screenfade { get { return _screenFade; } }
 
+    [SerializeField] PausMenu _pausMenu;
+    public PausMenu pausMenu { get { return _pausMenu; } }
+
     void Awake()
     {
         if (_UiManager == null)
@@ -22,7 +25,7 @@ public class UIManager : MonoBehaviour
             DontDestroyOnLoad(this);
         }
         else if (_UiManager != this)
-            DestroyImmediate(this);
+            DestroyImmediate(gameObject);
     }
 
 
@@ -31,6 +34,7 @@ public class UIManager : MonoBehaviour
     {
 
         _healthBar.gameObject.SetActive(false);
+
     }
 
 }

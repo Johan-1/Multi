@@ -10,7 +10,7 @@ public class TimeManager : MonoBehaviour , ISaveable
     int _minutes;
     int _hours;
      
-    void Start () 			
+    void Awake () 			
 	{
         AddToSaveableObjects();
         LoadData();
@@ -18,7 +18,7 @@ public class TimeManager : MonoBehaviour , ISaveable
 	
 	void Update () 	
 	{
-        _seconds += Time.deltaTime * 1000.0f;
+        _seconds += Time.deltaTime;
         if (_seconds >= 60)
         {
             _minutes++;

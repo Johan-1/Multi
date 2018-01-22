@@ -43,8 +43,9 @@ public class SaveLoadManager : MonoBehaviour
         }
         else if (_instance != this)
         {
-            DestroyImmediate(this);
+            DestroyImmediate(gameObject);
         }
+
     }
 
 
@@ -94,7 +95,8 @@ public class SaveLoadManager : MonoBehaviour
 
             // create player and load the scene where we last saved
             GameObject player = Instantiate(_player);
-            player.GetComponent<PlayerMovement>().transform.position = new Vector3( _saveData.sceneData.SavePointPosition[0], _saveData.sceneData.SavePointPosition[1],0);            
+            player.GetComponent<PlayerMovement>().transform.position = new Vector3( _saveData.sceneData.SavePointPosition[0], _saveData.sceneData.SavePointPosition[1],0);
+            UIManager.GetInstance.pausMenu.canOpenMenu = true;
             SceneManager.LoadScene(_saveData.sceneData.sceneID);
 
 
@@ -122,6 +124,7 @@ public class SaveLoadManager : MonoBehaviour
         // if we return to menu from an saved game we want to clear the data from previus game
         // otherwise if starting brand new game the data from last game will be loaded
         _saveData = new SaveData();
+
     }
 
 }

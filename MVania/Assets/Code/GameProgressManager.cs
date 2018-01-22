@@ -22,7 +22,7 @@ public class GameProgressManager : MonoBehaviour, ISaveable
             DontDestroyOnLoad(this);
         }
         else if (_gameProgressManager != this)
-            DestroyImmediate(this);               
+            DestroyImmediate(gameObject);               
     }
 
     void Start()
@@ -84,7 +84,7 @@ public class GameProgressManager : MonoBehaviour, ISaveable
 
     public void ClearData()
     {
-        //clear all data so we go in clean in new game
+        //clear all data so we go in clean in new game        
         _powerUpPickedUp = new bool[(int)PowerUp.POWERUPTYPE.SIZE];
         _healthUpgradesPickedUp = new bool[10];
 

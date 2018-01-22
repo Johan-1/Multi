@@ -16,7 +16,12 @@ public class MainMenu : MonoBehaviour
     [SerializeField] GameObject _startScreen;
     [SerializeField] GameObject _LoadScreen;
 
+    [SerializeField] GameObject _startButton;
+
     [SerializeField] SaveFileButton[] _savefileButtons;
+
+    [SerializeField] Vector2 _standardScale;
+    [SerializeField] Vector2 _highlightScale;
     
     [Serializable]
     struct SaveFileButton
@@ -27,7 +32,7 @@ public class MainMenu : MonoBehaviour
         public Text healthPickup;
     }
 
-    GameObject _previousSelectedButton;
+    GameObject _lastSelectedButton;
 
     SavefileInfoData[] _savefileInfoData;
    
@@ -35,7 +40,33 @@ public class MainMenu : MonoBehaviour
     void Awake()
     {
         LoadSaveFileInfoData();
-       
+
+        EventSystem.current.SetSelectedGameObject(_startButton);
+        _lastSelectedButton = _startButton;
+        _startButton.transform.localScale = _highlightScale;
+
+    }
+
+    void Update()
+    {
+        // check if the selected button has changed
+        if ( _lastSelectedButton != EventSystem.current.currentSelectedGameObject)
+        {
+
+            // if mouse has been clicked refocus on last selected button
+            if (EventSystem.current.currentSelectedGameObject == null)
+            {
+                EventSystem.current.SetSelectedGameObject(_lastSelectedButton);
+                return;
+            }
+
+            // reset scale on last button
+            // set scale on the new button
+            // set the new button as last selected button
+            _lastSelectedButton.transform.localScale = _standardScale;
+            EventSystem.current.currentSelectedGameObject.transform.localScale = _highlightScale;
+            _lastSelectedButton = EventSystem.current.currentSelectedGameObject;
+        }
     }
 
     public void ToLoadFiles()
@@ -43,7 +74,7 @@ public class MainMenu : MonoBehaviour
 
         _startScreen.SetActive(false);
         _LoadScreen.SetActive(true);
-        _previousSelectedButton = EventSystem.current.gameObject;
+        
         EventSystem.current.SetSelectedGameObject(_LoadScreen.transform.GetChild(0).gameObject);
                         
     }
@@ -78,14 +109,16 @@ public class MainMenu : MonoBehaviour
     {   
                 
         // create player     
-        GameObject player = Instantiate(_player);
+        Instantiate(_player);
 
         // tell saveloadmanager witch file to save data to
         SaveLoadManager.GetInstance.saveFilename = file;
 
         // save base data to file, (if we die without having saved in game, this data will be loaded)
         SaveLoadManager.GetInstance.saveData.sceneData = new Scenedata("Screen1", new float[3] { 0, 3, 0 });
-        SaveLoadManager.GetInstance.SaveGame(); 
+        SaveLoadManager.GetInstance.SaveGame();
+
+        UIManager.GetInstance.pausMenu.canOpenMenu = true;
 
         SceneManager.LoadScene("Screen1");
     }
