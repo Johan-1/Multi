@@ -28,8 +28,8 @@ public class PlayerMovement : MonoBehaviour
               
     // movement/jump privates   
     float _xInput;
-    int _airJumpCount = 0;   
-    bool _movingRight;
+    int _airJumpCount = 0;
+    bool _movingRight = true;
 
     float _wallTimer;
     // references
