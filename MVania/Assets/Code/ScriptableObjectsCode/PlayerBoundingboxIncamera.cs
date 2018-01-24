@@ -10,3 +10,7 @@ public class PlayerBoundingboxIncamera : ScriptableObject
     public Vector2 boundingboxYPosNeg;
 
 }
+
+
+
+
