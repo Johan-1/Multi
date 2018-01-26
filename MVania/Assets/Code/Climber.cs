@@ -9,31 +9,33 @@ public class Climber : MonoBehaviour
     [SerializeField] float _speed;
     [SerializeField] float _cornerSpeed;
     [SerializeField] float _dstBeforeEdgeStartRotate = 0.5f;
-    [SerializeField] int _startTargetPoint;
+    [SerializeField] int _startTargetIndex;
 
-    int _targetPosition;
+    int _targetIndex;
 
-    int _targetOnRotate = 1000;
+    // initialize to a non existing index(dont want this set to an index that exists)
+    int _targetIndexOnStartRotate = -1;
 
     
 
     void Awake()
     {
-        _targetPosition = _startTargetPoint;
-        
+        _targetIndex = _startTargetIndex;        
     }
 
     void Update()
     {
-
-        transform.position = Vector2.MoveTowards(transform.position, _positions[_targetPosition].position, _speed * Time.deltaTime);
+        // move towards the transform of target
+        transform.position = Vector2.MoveTowards(transform.position, _positions[_targetIndex].position, _speed * Time.deltaTime);
         CheckDistance();
 
-        if (transform.position == _positions[_targetPosition].position)
+        // if at target position, increment targetindex to next in array
+        if (transform.position == _positions[_targetIndex].position)
         {            
-            _targetPosition++;
-            if (_targetPosition == _positions.Length)
-                _targetPosition = 0;
+            _targetIndex++;
+            // reset if out of bounds
+            if (_targetIndex == _positions.Length)
+                _targetIndex = 0;
 
         }
 
@@ -41,12 +43,16 @@ public class Climber : MonoBehaviour
 
     void CheckDistance()
     {
-        float distance = (transform.position - _positions[_targetPosition].position).magnitude;
+        // get dst squared from current position to target position
+        float distance = (transform.position - _positions[_targetIndex].position).sqrMagnitude;
         
-        if (distance < _dstBeforeEdgeStartRotate && _targetOnRotate != _targetPosition)
+        // start rotation if distance is less then _dst before edge, also check so we only start rotation towards the same point once
+        if (distance < (_dstBeforeEdgeStartRotate * _dstBeforeEdgeStartRotate) && _targetIndexOnStartRotate != _targetIndex)
         {
             StartCoroutine(RotateOverTime());
-            _targetOnRotate = _targetPosition;
+
+            // set witch index was the current one when we started to rotate
+            _targetIndexOnStartRotate = _targetIndex;
 
         }
 
@@ -54,9 +60,11 @@ public class Climber : MonoBehaviour
 
     IEnumerator RotateOverTime()
     {
+        // rotate from current rotation to the rotation of the target point
         Quaternion start = transform.rotation;
-        Quaternion end = _positions[_targetPosition].rotation;        
+        Quaternion end = _positions[_targetIndex].rotation;        
 
+        // lerp rotation
         float fraction = 0.0f;
         while (fraction < 1.0f)
         {

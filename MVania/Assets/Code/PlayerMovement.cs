@@ -16,7 +16,8 @@ public class PlayerMovement : MonoBehaviour
     [Space(10), Header("WALLJUMP"), Space(5)]
     [SerializeField] float _wallSlideSpeed = 10.0f;
     [SerializeField] float _dropFromWallDelay = 0.2f;
-    [SerializeField] float _timeAddingWallPushOutForce = 0.2f;
+    [SerializeField] float _maxTimeAddingWallPushOutForce = 0.2f;
+    [SerializeField] float _minTimeAddingWallPushOutForce = 0.1f;
     [SerializeField] Vector2 _wallPushOutForce;
     [SerializeField] AnimationCurve _wallPushOutCurveX;
     [SerializeField] AnimationCurve _wallPushOutCurveY;
@@ -224,13 +225,17 @@ public class PlayerMovement : MonoBehaviour
         // set positive or negative force depending on if wall is to our left or right
         float xVelocity = _movingRight ? -Vector3.right.x * _wallPushOutForce.x : Vector3.right.x * _wallPushOutForce.x;
 
+        _movingRight = !_movingRight;
+        transform.right = -transform.right;
+
         // the amount of time we will be locked in jumping away from wall
+        // will go to max if button is held down, else will stop when button is realeased but still add during the min time
         float forcedJumpforceTimer = .0f;
-        while (forcedJumpforceTimer < _timeAddingWallPushOutForce)
+        while (forcedJumpforceTimer < _maxTimeAddingWallPushOutForce && Input.GetButton("Jump") || forcedJumpforceTimer < _minTimeAddingWallPushOutForce)
         {
             // animation curves for more control of acceleration/deacceleration of jump 
-            float wallOutForceX = xVelocity * _wallPushOutCurveX.Evaluate(Mathf.InverseLerp(0.0f, _timeAddingWallPushOutForce, forcedJumpforceTimer));
-            float wallOutForceY = _wallPushOutForce.y * _wallPushOutCurveY.Evaluate(Mathf.InverseLerp(0.0f, _timeAddingWallPushOutForce, forcedJumpforceTimer));
+            float wallOutForceX = xVelocity * _wallPushOutCurveX.Evaluate(Mathf.InverseLerp(0.0f, _maxTimeAddingWallPushOutForce, forcedJumpforceTimer));
+            float wallOutForceY = _wallPushOutForce.y * _wallPushOutCurveY.Evaluate(Mathf.InverseLerp(0.0f, _maxTimeAddingWallPushOutForce, forcedJumpforceTimer));
 
             forcedJumpforceTimer += Time.deltaTime;
 
@@ -246,7 +251,7 @@ public class PlayerMovement : MonoBehaviour
 
     void RaycastWall()
     {
-        if (Physics2D.Raycast(transform.position, _movingRight ? Vector3.right : -Vector3.right, 0.6f, LayerMask.GetMask("Ground")))
+        if (Physics2D.Raycast(transform.position, _movingRight ? Vector3.right : -Vector3.right, 0.4f, LayerMask.GetMask("Ground")))
         {
             AddFlag(MOVEMENTFLAGS.ONWALL);
             HandleSlideOffWall();           

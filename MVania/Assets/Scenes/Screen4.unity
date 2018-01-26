@@ -8802,11 +8802,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4186788451506440, guid: 8fefc3d7ff9badf4f97fb6b84e78a8ca, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 97.2
+      value: 99.8
       objectReference: {fileID: 0}
     - target: {fileID: 4186788451506440, guid: 8fefc3d7ff9badf4f97fb6b84e78a8ca, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 24.4
+      value: 36.1
       objectReference: {fileID: 0}
     - target: {fileID: 4186788451506440, guid: 8fefc3d7ff9badf4f97fb6b84e78a8ca, type: 2}
       propertyPath: m_LocalPosition.z
@@ -8845,7 +8845,7 @@ Prefab:
     - target: {fileID: 114364820937153080, guid: 8fefc3d7ff9badf4f97fb6b84e78a8ca,
         type: 2}
       propertyPath: _chargingTime
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114932760214208454, guid: 8fefc3d7ff9badf4f97fb6b84e78a8ca,
         type: 2}

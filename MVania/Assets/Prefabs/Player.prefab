@@ -41,7 +41,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1677387481980934}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 5, z: 0}
+  m_LocalPosition: {x: 159.5954, y: -17.657541, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -124,33 +124,34 @@ MonoBehaviour:
   _wallSlideSpeed: -4
   _dropFromWallDelay: 0.2
   _timeAddingWallPushOutForce: 0.2
-  _wallPushOutForce: {x: 10, y: 20}
+  _minTimeAddingWallPushOutForce: 0.05
+  _wallPushOutForce: {x: 12, y: 25}
   _wallPushOutCurveX:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 2
       time: 0
-      value: 0.025001526
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
     - serializedVersion: 2
-      time: 0.19757918
-      value: 0.706087
-      inSlope: 0.6117299
-      outSlope: 0.6117299
+      time: 0.3590871
+      value: 0.93727183
+      inSlope: -0.7942319
+      outSlope: -0.7942319
       tangentMode: 0
     - serializedVersion: 2
-      time: 0.7515649
-      value: 0.78935003
-      inSlope: 0.3299117
-      outSlope: 0.3299117
+      time: 0.5123792
+      value: 0.5846231
+      inSlope: -0.9274483
+      outSlope: -0.9274483
       tangentMode: 0
     - serializedVersion: 2
-      time: 1
-      value: 1.0250015
-      inSlope: 2
-      outSlope: 2
+      time: 0.9916687
+      value: 0.47499847
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -160,21 +161,15 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 2
       time: 0
-      value: 1.0012512
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
     - serializedVersion: 2
-      time: 0.8212852
-      value: 0.97307694
-      inSlope: -0.10788441
-      outSlope: -0.10788441
-      tangentMode: 0
-    - serializedVersion: 2
-      time: 1.0247498
-      value: 0.91365814
-      inSlope: 0
-      outSlope: 0
+      time: 1.0205383
+      value: 0.9962534
+      inSlope: -0.022654762
+      outSlope: -0.022654762
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2

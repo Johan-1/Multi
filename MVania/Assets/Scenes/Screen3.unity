@@ -4150,6 +4150,11 @@ Prefab:
       propertyPath: _damage
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114287066160977266, guid: 209446aad87e6be41a790c8971695d27,
+        type: 2}
+      propertyPath: _startTargetIndex
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 209446aad87e6be41a790c8971695d27, type: 2}
   m_IsPrefabParent: 0
@@ -4411,7 +4416,7 @@ MonoBehaviour:
   _speed: 2
   _cornerSpeed: 1.6
   _dstBeforeEdgeStartRotate: 0.25
-  _startTargetPoint: 2
+  _startTargetIndex: 2
 --- !u!212 &739120053
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -27337,7 +27342,7 @@ MonoBehaviour:
   _speed: 1
   _cornerSpeed: 0.8
   _dstBeforeEdgeStartRotate: 0.25
-  _startTargetPoint: 0
+  _startTargetIndex: 0
 --- !u!212 &2128653304
 SpriteRenderer:
   m_ObjectHideFlags: 0
