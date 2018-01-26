@@ -35,10 +35,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable, ISaveable
         // set max health to include number of uppgrades found
         _maxHealth += (_numUpgrades * _extraHealthPerUpgrade);
         _currentHealth = _maxHealth;
-
-        // setup healthbar depending on uppgrades
-        UIManager.GetInstance.healthBar.SetupHealthBar(_numUpgrades);
-
+       
         // get the color of the sprite
         _originalColor = GetComponent<SpriteRenderer>().color;
 
@@ -46,7 +43,13 @@ public class PlayerHealth : MonoBehaviour, IDamageable, ISaveable
        
     }
 
-        
+    void Start()
+    {
+        // setup healthbar depending on uppgrades
+        UIManager.GetInstance.healthBar.SetupHealthBar(_numUpgrades);
+    }
+
+
     public void ModifyHealth(int health, bool instantRespawn = false)
     {
         // only do damage if we are not invincible (can still respawn on instantRespawn damaging objects, just without taking damage)

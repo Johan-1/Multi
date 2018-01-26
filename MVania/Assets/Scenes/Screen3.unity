@@ -3671,13 +3671,38 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &321403031 stripped
+--- !u!1 &321403031
 GameObject:
+  m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 1358580105528016, guid: b097d3d7237d2f74cb85cdae2221283b,
     type: 2}
   m_PrefabInternal: {fileID: 734406294}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 321403032}
+  - component: {fileID: 321403035}
+  m_Layer: 0
+  m_Name: Missing Prefab (Dummy)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &321403032
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 734406294}
+  m_GameObject: {fileID: 321403031}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1622418751}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &321403035
 Rigidbody2D:
   serializedVersion: 4
@@ -3876,7 +3901,7 @@ Transform:
   m_Children:
   - {fileID: 1252018108}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &515827804
 Prefab:
@@ -4093,6 +4118,36 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1546447197246640, guid: 209446aad87e6be41a790c8971695d27, type: 2}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114708190428283338, guid: 209446aad87e6be41a790c8971695d27,
+        type: 2}
+      propertyPath: _laserStartPosition
+      value: 
+      objectReference: {fileID: 739120054}
+    - target: {fileID: 114708190428283338, guid: 209446aad87e6be41a790c8971695d27,
+        type: 2}
+      propertyPath: _startDirection.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114708190428283338, guid: 209446aad87e6be41a790c8971695d27,
+        type: 2}
+      propertyPath: _isActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114708190428283338, guid: 209446aad87e6be41a790c8971695d27,
+        type: 2}
+      propertyPath: _localSpace
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114708190428283338, guid: 209446aad87e6be41a790c8971695d27,
+        type: 2}
+      propertyPath: _startActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114708190428283338, guid: 209446aad87e6be41a790c8971695d27,
+        type: 2}
+      propertyPath: _damage
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -4324,10 +4379,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 572cf20141b5d65449f444137d1646b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localDirection: {x: 0, y: 1, z: 0}
-  _raycastPoint: {fileID: 739120054}
-  constant: 0
-  isActive: 1
+  _startDirection: {x: 0, y: 1, z: 0}
+  _laserStartPosition: {fileID: 739120054}
+  _constant: 0
+  _startActive: 0
+  _localSpace: 1
+  _damage: 1
   toggleActiveTimes:
   - 2
   _hitParticleSystems:
@@ -4491,6 +4548,11 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: be4983daf139cd24baa71b6273e7d6ee, type: 2}
   m_IsPrefabParent: 0
+--- !u!4 &888867259 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4931524960980062, guid: 5490b0b7029cf24478462a4cf9a6c3e2,
+    type: 2}
+  m_PrefabInternal: {fileID: 1200715351}
 --- !u!1 &918240379
 GameObject:
   m_ObjectHideFlags: 0
@@ -4585,7 +4647,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &918240385
 MonoBehaviour:
@@ -4692,7 +4754,51 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4419779838706356, guid: 5490b0b7029cf24478462a4cf9a6c3e2, type: 2}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114804696821599800, guid: 5490b0b7029cf24478462a4cf9a6c3e2,
+        type: 2}
+      propertyPath: _direction.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114804696821599800, guid: 5490b0b7029cf24478462a4cf9a6c3e2,
+        type: 2}
+      propertyPath: _localSpace
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114804696821599800, guid: 5490b0b7029cf24478462a4cf9a6c3e2,
+        type: 2}
+      propertyPath: _constant
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114804696821599800, guid: 5490b0b7029cf24478462a4cf9a6c3e2,
+        type: 2}
+      propertyPath: _isActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114804696821599800, guid: 5490b0b7029cf24478462a4cf9a6c3e2,
+        type: 2}
+      propertyPath: _startDirection.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114804696821599800, guid: 5490b0b7029cf24478462a4cf9a6c3e2,
+        type: 2}
+      propertyPath: _laserStartPosition
+      value: 
+      objectReference: {fileID: 888867259}
+    - target: {fileID: 4931524960980062, guid: 5490b0b7029cf24478462a4cf9a6c3e2, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -4.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114804696821599800, guid: 5490b0b7029cf24478462a4cf9a6c3e2,
+        type: 2}
+      propertyPath: _startActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114804696821599800, guid: 5490b0b7029cf24478462a4cf9a6c3e2,
+        type: 2}
+      propertyPath: _damage
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5490b0b7029cf24478462a4cf9a6c3e2, type: 2}
@@ -19927,6 +20033,35 @@ Transform:
   m_PrefabParentObject: {fileID: 4063758527127100, guid: be4983daf139cd24baa71b6273e7d6ee,
     type: 2}
   m_PrefabInternal: {fileID: 394262237}
+--- !u!1 &1622418750
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 734406294}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1622418751}
+  m_Layer: 0
+  m_Name: Missing Prefab
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1622418751
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 734406294}
+  m_GameObject: {fileID: 1622418750}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 321403032}
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1934343598
 GameObject:
   m_ObjectHideFlags: 0
@@ -26970,6 +27105,36 @@ Prefab:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114708190428283338, guid: 209446aad87e6be41a790c8971695d27,
+        type: 2}
+      propertyPath: _laserStartPosition
+      value: 
+      objectReference: {fileID: 2128653305}
+    - target: {fileID: 114708190428283338, guid: 209446aad87e6be41a790c8971695d27,
+        type: 2}
+      propertyPath: _constant
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114708190428283338, guid: 209446aad87e6be41a790c8971695d27,
+        type: 2}
+      propertyPath: _localSpace
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114708190428283338, guid: 209446aad87e6be41a790c8971695d27,
+        type: 2}
+      propertyPath: _isActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114708190428283338, guid: 209446aad87e6be41a790c8971695d27,
+        type: 2}
+      propertyPath: _startDirection.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114708190428283338, guid: 209446aad87e6be41a790c8971695d27,
+        type: 2}
+      propertyPath: _damage
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 209446aad87e6be41a790c8971695d27, type: 2}
   m_IsPrefabParent: 0
@@ -27141,10 +27306,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 572cf20141b5d65449f444137d1646b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localDirection: {x: 0, y: 1, z: 0}
-  _raycastPoint: {fileID: 2128653305}
-  constant: 1
-  isActive: 1
+  _startDirection: {x: 0, y: 1, z: 0}
+  _laserStartPosition: {fileID: 2128653305}
+  _constant: 1
+  _startActive: 0
+  _localSpace: 1
+  _damage: 1
   toggleActiveTimes: []
   _hitParticleSystems:
   - {fileID: 45315854}
