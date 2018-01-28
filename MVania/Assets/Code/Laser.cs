@@ -7,19 +7,26 @@ using System;
 public class Laser : MonoBehaviour
 {
 
-    [SerializeField] Vector3 _startDirection;
-    
+    [Space(5), Header("BASIC SETTINGS"), Space(5)]
     [SerializeField] Transform _laserStartPosition; public Transform raycastPoint { get{ return _laserStartPosition; }}
-
-    [SerializeField] bool _constant;
-    [SerializeField] bool _startActive;
+    [SerializeField] Vector3 _startDirection;
     [SerializeField] bool _localSpace;
     [SerializeField] int _damage;
-
+    
+    [Space(5), Header("ACTIVE TOOGLE"), Space(5)]
+    [SerializeField] bool _constant;
+    [SerializeField] bool _startActive;
     // have array of toogletimes to be able to create moore diverse patterns
     [SerializeField] float[] toggleActiveTimes;
 
+    [Space(5),Header("DYNAMIC WIDTH"), Space(5)]
+    [SerializeField] bool _dynamicWidthOnToggle;
+    [SerializeField] Vector2 _widthMinMax; public Vector2 widthMinMax { get { return _widthMinMax; } }
+    [SerializeField] float _changeWidthTime; 
+    
+
     // particles that will be positioned to laserhit or particles that just will toggle whit laser activestate
+    [Space(5), Header("PARTICLES"), Space(5)]
     [SerializeField] ParticleSystem[] _hitParticleSystems;
     [SerializeField] ParticleSystem[] _otherParticleSystems;
 
@@ -39,6 +46,10 @@ public class Laser : MonoBehaviour
     LineRenderer _lineRenderer;
     bool _isActive;
 
+    // privates for dynamic width
+    bool _isLerpingWidth;
+    AnimationCurve _widthCurve;
+
     // will be called if a object with a specific tag have been hit or not
     public event Action TargetWasHit;
     public event Action TargetMissed;
@@ -51,7 +62,12 @@ public class Laser : MonoBehaviour
     {
         _lineRenderer = GetComponent<LineRenderer>();
         _lineRenderer.positionCount = 2;
+
+        // need to store a copy of the animationcurve in the linerenderer
+        // curve in linerenderer will be changed on lerp making us lose the originalcurve values we need when lerping back 
+        _widthCurve = new AnimationCurve(_lineRenderer.widthCurve.keys);     
         
+        // store the startdirection in direction
         _direction = _startDirection;
 
         // if constant, force to isActive (will not ever be active otherwise)
@@ -139,6 +155,45 @@ public class Laser : MonoBehaviour
     
     }
 
+    void LerpLaserWidth(bool enlargen)
+    {
+        // if not alredy in coroutine start lerping
+        if(!_isLerpingWidth)
+          StartCoroutine(LerpLaserWidthCo(enlargen));
+    }
+
+    public void SetWidth(float width, bool keepCurve)
+    {
+        // set width with keept curve or not
+        _lineRenderer.startWidth = keepCurve ? width * _widthCurve.Evaluate(0) : width;
+        _lineRenderer.endWidth = keepCurve ? width * _widthCurve.Evaluate(1) : width;        
+    }
+
+    IEnumerator LerpLaserWidthCo(bool enlargen)
+    {
+        _isLerpingWidth = true;
+
+        // get from/to values depending of lerping from small to big and vice versa
+        float from = enlargen ? _widthMinMax.x : _widthMinMax.y;
+        float to = enlargen ? _widthMinMax.y : _widthMinMax.x;
+
+        float fraction = 0.0f;
+        while (fraction < 1.0f)
+        {
+            
+            fraction += Time.deltaTime / _changeWidthTime;
+
+            // add the values from animationcurve to keep the different widths depending on start/end of line
+            _lineRenderer.startWidth = Mathf.Lerp(from, to, fraction) * _widthCurve.Evaluate(0);
+            _lineRenderer.endWidth = Mathf.Lerp(from, to, fraction) *_widthCurve.Evaluate(1);
+
+            yield return null;
+        }
+
+        _isLerpingWidth = false;
+
+    }
+
     IEnumerator ToggleRay()
     {
         float timer = 0.0f;
@@ -148,11 +203,19 @@ public class Laser : MonoBehaviour
         {
             timer += Time.deltaTime;
 
+            // if we are using dynamicwidth we start to lerp width before the laser gets toggled off
+            if (_dynamicWidthOnToggle && _isActive && timer >= toggleActiveTimes[index] - _changeWidthTime)
+                LerpLaserWidth(false);
+           
             if (timer >= toggleActiveTimes[index])
             {
                 // toggle linerenderer and raycast
                 _isActive = !_isActive;
                 _lineRenderer.enabled = _isActive;
+
+                // if the laser just got activated and we are using dynamicwidth, lerp back to maxsize
+                if (_dynamicWidthOnToggle && _isActive)
+                    LerpLaserWidth(true);
 
                 // if we just got active do a raycast right away to avoid line being rendered on old positions
                 if (_isActive)

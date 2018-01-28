@@ -8845,7 +8845,7 @@ Prefab:
     - target: {fileID: 114364820937153080, guid: 8fefc3d7ff9badf4f97fb6b84e78a8ca,
         type: 2}
       propertyPath: _chargingTime
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114932760214208454, guid: 8fefc3d7ff9badf4f97fb6b84e78a8ca,
         type: 2}
@@ -8871,6 +8871,21 @@ Prefab:
         type: 2}
       propertyPath: _startActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114364820937153080, guid: 8fefc3d7ff9badf4f97fb6b84e78a8ca,
+        type: 2}
+      propertyPath: _dynamicWidthOnCharging
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114932760214208454, guid: 8fefc3d7ff9badf4f97fb6b84e78a8ca,
+        type: 2}
+      propertyPath: _widthMinMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114932760214208454, guid: 8fefc3d7ff9badf4f97fb6b84e78a8ca,
+        type: 2}
+      propertyPath: _widthMinMax.y
+      value: 0.4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8fefc3d7ff9badf4f97fb6b84e78a8ca, type: 2}

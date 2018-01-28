@@ -4155,6 +4155,26 @@ Prefab:
       propertyPath: _startTargetIndex
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 114708190428283338, guid: 209446aad87e6be41a790c8971695d27,
+        type: 2}
+      propertyPath: _widthStartEnd.y
+      value: 0.37
+      objectReference: {fileID: 0}
+    - target: {fileID: 114708190428283338, guid: 209446aad87e6be41a790c8971695d27,
+        type: 2}
+      propertyPath: _changeWidthTime
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 114708190428283338, guid: 209446aad87e6be41a790c8971695d27,
+        type: 2}
+      propertyPath: _dynamicWidthOnToggle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114708190428283338, guid: 209446aad87e6be41a790c8971695d27,
+        type: 2}
+      propertyPath: _widthMinMax.y
+      value: 0.4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 209446aad87e6be41a790c8971695d27, type: 2}
   m_IsPrefabParent: 0
@@ -4384,14 +4404,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 572cf20141b5d65449f444137d1646b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startDirection: {x: 0, y: 1, z: 0}
   _laserStartPosition: {fileID: 739120054}
-  _constant: 0
-  _startActive: 0
+  _startDirection: {x: 0, y: 1, z: 0}
   _localSpace: 1
   _damage: 1
+  _constant: 0
+  _startActive: 0
   toggleActiveTimes:
   - 2
+  _dynamicWidthOnToggle: 1
+  _widthMinMax: {x: 0, y: 0.4}
+  _changeWidthTime: 0.6
   _hitParticleSystems:
   - {fileID: 2065372322}
   _otherParticleSystems:
@@ -4804,6 +4827,26 @@ Prefab:
         type: 2}
       propertyPath: _damage
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114804696821599800, guid: 5490b0b7029cf24478462a4cf9a6c3e2,
+        type: 2}
+      propertyPath: _widthStartEnd.y
+      value: 0.37
+      objectReference: {fileID: 0}
+    - target: {fileID: 114804696821599800, guid: 5490b0b7029cf24478462a4cf9a6c3e2,
+        type: 2}
+      propertyPath: _changeWidthTime
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114804696821599800, guid: 5490b0b7029cf24478462a4cf9a6c3e2,
+        type: 2}
+      propertyPath: _dynamicWidthOnToggle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114804696821599800, guid: 5490b0b7029cf24478462a4cf9a6c3e2,
+        type: 2}
+      propertyPath: _widthMinMax.y
+      value: 0.4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5490b0b7029cf24478462a4cf9a6c3e2, type: 2}
@@ -27022,6 +27065,11 @@ Prefab:
       propertyPath: toggleActiveTimes.Array.size
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 120680837818811176, guid: 209446aad87e6be41a790c8971695d27,
+        type: 2}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4208291360420380, guid: 209446aad87e6be41a790c8971695d27, type: 2}
       propertyPath: m_LocalPosition.x
       value: -8.3960495
@@ -27140,6 +27188,31 @@ Prefab:
       propertyPath: _damage
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 120680837818811176, guid: 209446aad87e6be41a790c8971695d27,
+        type: 2}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 120680837818811176, guid: 209446aad87e6be41a790c8971695d27,
+        type: 2}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].time
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 120680837818811176, guid: 209446aad87e6be41a790c8971695d27,
+        type: 2}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[1].value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 120680837818811176, guid: 209446aad87e6be41a790c8971695d27,
+        type: 2}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[1].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 120680837818811176, guid: 209446aad87e6be41a790c8971695d27,
+        type: 2}
+      propertyPath: m_Parameters.widthMultiplier
+      value: 0.22
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 209446aad87e6be41a790c8971695d27, type: 2}
   m_IsPrefabParent: 0
@@ -27244,19 +27317,19 @@ LineRenderer:
   - {x: 75.73, y: 14.0866375, z: 36.054688}
   m_Parameters:
     serializedVersion: 2
-    widthMultiplier: 0.37
+    widthMultiplier: 0.22
     widthCurve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 2
         time: 0
-        value: 0.36606598
+        value: 1
         inSlope: 0
         outSlope: 0
         tangentMode: 0
       - serializedVersion: 2
-        time: 0.29774708
-        value: 0.10713577
+        time: 1
+        value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -27311,13 +27384,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 572cf20141b5d65449f444137d1646b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startDirection: {x: 0, y: 1, z: 0}
   _laserStartPosition: {fileID: 2128653305}
-  _constant: 1
-  _startActive: 0
+  _startDirection: {x: 0, y: 1, z: 0}
   _localSpace: 1
   _damage: 1
+  _constant: 1
+  _startActive: 0
   toggleActiveTimes: []
+  _dynamicWidthOnToggle: 0
+  _widthMinMax: {x: 0, y: 0}
+  _changeWidthTime: 0
   _hitParticleSystems:
   - {fileID: 45315854}
   _otherParticleSystems:

@@ -15,6 +15,8 @@ public class LaserEye : MonoBehaviour
     [SerializeField] float _cooldown;
     [SerializeField] string _targetTag;
 
+    [SerializeField] bool _dynamicWidthOnCharging;
+
 
     [SerializeField] ParticleSystem[] _hitParticles;
 
@@ -30,7 +32,7 @@ public class LaserEye : MonoBehaviour
     Vector3 _fromDirection;
     float _smoothFraction;
 
-    Vector3 kk;
+    
 
     void Awake()
     {
@@ -42,7 +44,7 @@ public class LaserEye : MonoBehaviour
     {
 
         // add functions to delegates that gets called if player gets hit or not
-        // this makes chargetimer reset when object intersect with player(ray will always hit player when fullycharged)
+        // this makes chargetimer reset when object intersect with player
         if (_resetOnLosingTarget)
         {
             _laser.TargetWasHit += ChargeLaser;
@@ -56,7 +58,8 @@ public class LaserEye : MonoBehaviour
         _laser.overideDirection = true;
         _laser.isLethal = false;
         _laser.targetTag = _targetTag;
-        _laserPosition = _laser.raycastPoint.position;              
+        _laserPosition = _laser.raycastPoint.position;
+       
     }
 
     void Update()
@@ -67,6 +70,9 @@ public class LaserEye : MonoBehaviour
             ChargeLaser();
 
         SetColor();
+
+        if(_dynamicWidthOnCharging)
+           SetWidth();
     }
 
     void FocusOnPlayer()
@@ -109,6 +115,12 @@ public class LaserEye : MonoBehaviour
         // lerp between 0% chargedColor and 100% chargedColor
         float fraction = Mathf.InverseLerp(0, _chargingTime, _currentChargeTime);        
         _laser.SetColor(Color.Lerp(_chargeZeroColor, _chargeFullColor, fraction));
+    }
+
+    void SetWidth()
+    {
+        float fraction = Mathf.InverseLerp(0, _chargingTime, _currentChargeTime);
+        _laser.SetWidth(Mathf.Lerp(_laser.widthMinMax.x, _laser.widthMinMax.y, fraction), true);
     }
 
     IEnumerator DoHit()
